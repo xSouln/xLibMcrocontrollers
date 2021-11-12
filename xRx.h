@@ -25,7 +25,6 @@ typedef struct {
 }xRxStateT;
 //=================================================================================================================================
 typedef struct{
-  uint16_t Len;
   uint16_t TotalIndex;
   uint16_t HandlerIndex;
   uint16_t SizeMask;
@@ -55,5 +54,15 @@ void xRxClear(xRxT* rx);
   xRX.CircleReceiver.Buf[xRX.CircleReceiver.TotalIndex] = byte;\
   xRX.CircleReceiver.TotalIndex++;\
   xRX.CircleReceiver.TotalIndex &= xRX.CircleReceiver.SizeMask
+//=================================================================================================================================
+#define RX_BUF_INIT(name)\
+  uint8_t name##_RX_CIRCLE_BUF[name##_RX_CIRCLE_BUF_SIZE + 1];\
+  uint8_t name##_RX_OBJECT_BUF[name##_RX_OBJECT_BUF_SIZE]
+//=================================================================================================================================
+#define RX_OBJECT_RECEIVER_INIT(name, callback)\
+  .ObjectReceiver = { .EndLineCallback = callback, .Object = name##_RX_OBJECT_BUF, .Len = name##_RX_OBJECT_BUF_SIZE }
+//=================================================================================================================================
+#define RX_CIRCLE_RECEIVER_INIT(name)\
+  .CircleReceiver = { .Buf = name##_RX_CIRCLE_BUF, .SizeMask = name##_RX_CIRCLE_BUF_SIZE }
 //=================================================================================================================================
 #endif

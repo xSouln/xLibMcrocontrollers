@@ -9,9 +9,10 @@
 #define TX_BUF_INIT(name)\
 uint8_t name##_TX_CIRCLE_BUF[name##_TX_CIRCLE_BUF_SIZE + 1]
 
-#define TX_BINDING(name)\
+#define TX_BINDING(name, transmit_action)\
 .State = { .SizeMask = name##_TX_CIRCLE_BUF_SIZE },\
-.Out = { .ptr = name##_TX_CIRCLE_BUF }
+.Out = { .ptr = name##_TX_CIRCLE_BUF },\
+.TransmitAction = transmit_action
 //=================================================================================================================================
 typedef struct { uint16_t size; uint8_t* ptr; } xPrintT;
 //=================================================================================================================================
@@ -21,7 +22,6 @@ typedef bool (*TransmitActionT)(xPrintT *print);
 //=================================================================================================================================
 //=================================================================================================================================
 typedef struct{
-    //uint16_t BufSize;
     volatile uint16_t TotalIndex;
     uint16_t HandlerIndex;
     uint16_t UpdateDelay;

@@ -29,14 +29,13 @@ typedef struct{
 }xResponseT;
 //=================================================================================================================================
 typedef struct{
-  //xRequestHandlerT Handler;
+  xRequestHandlerT Handler;
   //char* Header;
   //uint16_t HeaderSize;
   uint16_t Id;
   xEvt Control;
   xEvtRequest Response;
   xContent Content;
-  //xContent *Contents;
 }xRequestT;
 
 #define NEW_REQUEST(id, response, control, content){ .Id = id, .Response = (xEvtRequest)response, .Control = (xEvt)control, .Content = { .obj = &content, .size = sizeof(content) } }
