@@ -361,14 +361,7 @@ extern TimStm32_T *xTimer7;
 extern TimStm32_T *xTimer8;
 extern TimStm32_T *xTimer9;
 extern TimStm32_T *xTimer10;
-//=================================================================================================================================
-inline static void xTimerHandler(){
-  Timer.Events.Time1ms = true;
-  if(++Timer.Counters.Time10ms == 10){ Timer.Counters.Time10ms = 0; Timer.Events.Time10ms = true;
-    if(++Timer.Counters.Time100ms == 10){ Timer.Counters.Time100ms = 0; Timer.Events.Time100ms = true;
-      if(++Timer.Counters.Time1000ms == 10){ Timer.Counters.Time1000ms = 0; Timer.Events.Time1000ms = true; }
-    }
-  }
-}
+
+extern inline void xTimerHandler();
 //=================================================================================================================================
 #endif /* TIMERS_H_ */

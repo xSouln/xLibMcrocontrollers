@@ -23,3 +23,12 @@ TimStm32_T *xTimer9 = (TimStm32_T*)TIM9;
 TimStm32_T *xTimer10 = (TimStm32_T*)TIM10;
 */
 //=================================================================================================================================
+inline void xTimerHandler(){
+  Timer.Events.Time1ms = true;
+  if(++Timer.Counters.Time10ms == 10){ Timer.Counters.Time10ms = 0; Timer.Events.Time10ms = true;
+    if(++Timer.Counters.Time100ms == 10){ Timer.Counters.Time100ms = 0; Timer.Events.Time100ms = true;
+      if(++Timer.Counters.Time1000ms == 10){ Timer.Counters.Time1000ms = 0; Timer.Events.Time1000ms = true; }
+    }
+  }
+}
+//=================================================================================================================================
