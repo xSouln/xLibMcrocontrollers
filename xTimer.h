@@ -27,11 +27,11 @@ typedef struct{
   uint32_t Retention;
   uint32_t Period;
   
-  xTimerRequestHandlerT Handler;
-  
   xObject Object;
   uint16_t ObjectSize;
   uint16_t ObjectKey;
+  
+  xTimerRequestHandlerT Handler;
 }xTimerRequestT;
 //=================================================================================================================================
 typedef union {

@@ -35,29 +35,27 @@ inline void xTimerHandler(){
 void xTimerDecrement(xTimerT* timer)
 {
   xTimerRequestT *request;
-  xListElementT* element = timer->Requests.FirstElement;
-  timer->Handler.Decrement = true;
+  xListElementT* element = timer->Requests.Head;
+  //timer->Handler.Decrement = true;
   
-  for (uint8_t i = 0; i < timer->Requests.Count; i++)
-  {
-    request = (xTimerRequestT*)element->Value;//xListGet(&timer->Requests, i);
-    element = element->Next;
+  while(element){
+    request = element->Value;    
     if(request->Retention && request->Handler.Enable){ request->Retention--; }
+    element = element->Next;
   }
   
-  timer->Handler.Decrement = false;
+  //timer->Handler.Decrement = false;
 }
 //=================================================================================================================================
 void xTimer(xTimerT* timer)
 {
   xTimerRequestT *request;
-  xListElementT* element = timer->Requests.FirstElement;
-  timer->Handler.Update = true;
+  xListElementT* element = timer->Requests.Head;
+  //timer->Handler.Update = true;
   
-  uint8_t i = 0;
-  while(i < timer->Requests.Count)
+  while(element)
   {
-    request = (xTimerRequestT*)element->Value;//xListGet(&timer->Requests, i);
+    request = element->Value;
     element = element->Next;
     
     if(request->Action && !request->Retention)
@@ -68,31 +66,29 @@ void xTimer(xTimerT* timer)
       {
         request->Retention = request->Period;
       }
+      /*
       else
       {
         xListRemoveAt(&timer->Requests, i);
         free(request);
         goto end_while;
       }
+*/
     }
-    
-    i++;
-  end_while:;
-  }
-  
-  timer->Handler.Update = false;
+  }  
+  //timer->Handler.Update = false;
 }
 //=================================================================================================================================
 xTimerRequestT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period){
-  timer->Handler.Add = true;
+  //timer->Handler.Add = true;
   
-  xTimerRequestT* request = (xTimerRequestT*)calloc(1, sizeof(xTimerRequestT));
+  xTimerRequestT* request = calloc(1, sizeof(xTimerRequestT));
   request->Retention = retention;
   request->Period = period;
   request->Action = action;
   xListAdd(&timer->Requests, request);
   
-  timer->Handler.Add = false;
+  //timer->Handler.Add = false;
   return request;
 }
 //=================================================================================================================================

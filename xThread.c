@@ -38,23 +38,21 @@ int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16
 */
 //=================================================================================================================================
 void xThread(xThreadT *thread){    
-  if(thread->Requests.Count){
-    thread->Handler.Update = true;
+  //thread->Handler.Update = true;
     
-    while(thread->Requests.Count){
-      xThreadRequestT* request = xListRemoveAt(&thread->Requests, 0);
-      request->Action(thread, request);
-      free(request);
-    }
-    
-    thread->Handler.Update = false;
+  while(thread->Requests.Count){
+    xThreadRequestT* request = xListRemoveAt(&thread->Requests, 0);
+    request->Action(thread, request);
+    free(request);
   }
+  
+  //thread->Handler.Update = false;
 }
 //=================================================================================================================================
 int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key){
   thread->Handler.IsAdd = true;
   
-  xThreadRequestT* request = (xThreadRequestT*)calloc(1, sizeof(xThreadRequestT));
+  xThreadRequestT* request = calloc(1, sizeof(xThreadRequestT));
   
   request->Action = action;
   request->Object = object;

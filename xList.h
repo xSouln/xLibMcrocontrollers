@@ -11,15 +11,16 @@ typedef struct{
 }xListElementT;
 
 typedef struct{
-  xListElementT* FirstElement;
-  xListElementT* LastElement; 
+  xListElementT* Head;
+  xListElementT* Tail; 
   uint16_t Count;
 }xListT;
 
-xObject xListAdd(xListT *list, xObject object);
-xObject xListRemoveAt(xListT *list, uint16_t index);
-xObject xListInsert(xListT *list, uint16_t index, xObject object);
+xListElementT* xListAdd(xListT *list, xObject object);
+xListElementT* xListInsert(xListT *list, uint16_t index, xObject object);
+xListElementT* xListRemoveElement(xListT *list, xListElementT *element);
+xListElementT* xListRemoveAt(xListT *list, uint16_t index);
 
-xObject xListGet(xListT *list, uint16_t index);
+xListElementT* xListGetElement(xListT *list, uint16_t index);
 //=================================================================================================================================
 #endif
