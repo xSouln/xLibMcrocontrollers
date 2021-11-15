@@ -15,7 +15,7 @@ xListElementT* xListAdd(xListT *list, xObject object){
   }
   return element;
 }
-
+//=================================================================================================================================
 xListElementT* xListInsert(xListT *list, uint16_t index, xObject object){
   xListElementT *element = 0;
   if(index < list->Count){
@@ -37,7 +37,7 @@ xListElementT* xListInsert(xListT *list, uint16_t index, xObject object){
   }
   return element;
 }
-
+//=================================================================================================================================
 xListElementT* xListRemoveAt(xListT *list, uint16_t index){
   if(index < list->Count){
     xListElementT *previous = 0;
@@ -55,53 +55,45 @@ xListElementT* xListRemoveAt(xListT *list, uint16_t index){
     
     if(total->Next == 0){ list->Tail = previous; }
     
-    result = total->Value;    
-    free(total);
+    result = total->Value;
     
+    free(total);    
     list->Count--;
   }
   return result;
 }
-/*
-xListElementT *xListFindexListT *list, xListElementT *element, uint16_t index){
-  if(!list->Count){ return 0; }
-  
-  xListElementT *previous = 0;
-  xListElementT *total = list->Head;
-  
-  while(element && index)
-}
-*/
+//=================================================================================================================================
 xListElementT* xListRemoveElement(xListT *list, xListElementT *element)
 {
   if(!list->Count){ return 0; }
   
-  //xListElementT *total = list->Head;
-  xListElementT **previous = &list->Head;
-  /*
-  while(total && total != element)
-  {
-    previous = &total;
-    total = total->Next;
+  //xListElementT* total = list->Head;
+  //xListElementT* previous = 0;
+  xListElementT** ptr = &list->Head;
+  
+  while(*ptr && *ptr != element)
+  //while(total && total != element)
+  {    
+    ptr = (xListElementT**)&(*ptr)->Next;
+    //previous = total;
+    //total = total->Next;
   }
-  */
-  while((*previous)->Next && *previous != element)
-  {
-    previous = (xListElementT**)&((*previous)->Next);
-  }
+  
+  //if(!total) { return 0; }
+  if(!*ptr) { return 0; }
   
   //if(!previous) { list->Head = total->Next; }
-  //else { previous->Next = total->Next; }
+  //else { previous->Next = total->Next; }  
   
-    
-  if(total->Next == 0){ list->Tail = previous; }
+  if(element->Next == 0){ list->Tail = element->Next; }
+  (*ptr) = (*ptr)->Next;
   
-  free(total);  
+  free(element);  
   list->Count--;
     
-  return result;
+  return (*ptr)->Next;
 }
-
+//=================================================================================================================================
 xListElementT* xListGetElement(xListT *list, uint16_t index){
   xListElementT *element;
   if(index < list->Count){

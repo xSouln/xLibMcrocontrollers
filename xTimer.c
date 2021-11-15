@@ -56,7 +56,6 @@ void xTimer(xTimerT* timer)
   while(element)
   {
     request = element->Value;
-    element = element->Next;
     
     if(request->Action && !request->Retention)
     {
@@ -66,15 +65,16 @@ void xTimer(xTimerT* timer)
       {
         request->Retention = request->Period;
       }
-      /*
+      
       else
       {
         xListRemoveAt(&timer->Requests, i);
         free(request);
         goto end_while;
       }
-*/
     }
+    element = element->Next;
+  end_while:;
   }  
   //timer->Handler.Update = false;
 }
