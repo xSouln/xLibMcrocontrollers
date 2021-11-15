@@ -9,28 +9,28 @@
 typedef struct{ uint16_t size; uint8_t *data; } xTaskCallbackT;
 //=================================================================================================================================
 typedef struct TaskManagerType{
-	uint32_t MaxTic;
-	xEvt Func;
-	xObject Object;
+  uint32_t MaxTic;
+  xEvt Func;
+  xObject Object;
 }xTaskT;
 //=================================================================================================================================
 typedef struct xTaskOptionType{
-	uint8_t LastIndex;
-	uint8_t MaxCount;
-	uint8_t Count;
+  uint8_t LastIndex;
+  uint8_t MaxCount;
+  uint8_t Count;
 }xTaskOptionT;
 //=================================================================================================================================
 typedef union {
-	struct{
-		uint8_t Pause : 1;
-	};
-	uint8_t Value;
+  struct{
+    uint8_t Pause : 1;
+  };
+  uint8_t Value;
 }xTaskStateT;
 //=================================================================================================================================
 typedef struct TaskLineType{
-	xTaskStateT State;
-	xTaskOptionT Option;
-	xTaskT *Tasks;
+  xTaskStateT State;
+  xTaskOptionT Option;
+  xTaskT *Tasks;
 }xTaskLineT;
 //=================================================================================================================================
 void xTaskUpdate(xTaskLineT *TaskLine);

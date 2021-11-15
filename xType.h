@@ -36,7 +36,7 @@ enum ERRORS{
 typedef void* xObject;
 //=================================================================================================================================
 typedef xObject (*xEvt)(xObject Obj);
-typedef struct { uint8_t *obj; uint16_t size; } xContext;
+typedef struct { xObject obj; uint16_t key; } xContext;
 typedef struct { xObject obj; uint16_t size; } xContent;
 //=================================================================================================================================
 typedef struct{ uint8_t Start; uint8_t Ch1; uint8_t Ch2; uint8_t Ch3; uint8_t Ch4; uint8_t End; } RequestHeaderT;

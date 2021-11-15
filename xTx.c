@@ -5,7 +5,7 @@
 void xTxAdd(xTxT *Tx, xObject obj, uint16_t obj_size){
   uint8_t *ptr = (uint8_t*)obj;
   while(obj_size){
-    Tx->Packet.ptr[Tx->State.TotalIndex] = *ptr++;
+    Tx->Buffer[Tx->State.TotalIndex] = *ptr++;
     Tx->State.TotalIndex++;
     Tx->State.TotalIndex &= Tx->State.SizeMask;
     obj_size--;
@@ -15,7 +15,7 @@ void xTxAdd(xTxT *Tx, xObject obj, uint16_t obj_size){
 xPacketT xTxGetPacket(xTxT *Tx){
   xPacketT packet;
   packet.size = Tx->State.TotalIndex;
-  packet.ptr = Tx->Packet.ptr + Tx->State.HandlerIndex;
+  packet.ptr = Tx->Buffer + Tx->State.HandlerIndex;
   
   if(packet.size < Tx->State.HandlerIndex){
     packet.size = Tx->State.SizeMask - Tx->State.HandlerIndex + 1;
@@ -29,7 +29,7 @@ xPacketT xTxGetPacket(xTxT *Tx){
 }
 //=================================================================================================================================
 void xTxPutByte(xTxT *Tx, uint8_t byte){
-  Tx->Packet.ptr[Tx->State.TotalIndex] = byte;
+  Tx->Buffer[Tx->State.TotalIndex] = byte;
   Tx->State.TotalIndex++;
   Tx->State.TotalIndex &= Tx->State.SizeMask;
 }

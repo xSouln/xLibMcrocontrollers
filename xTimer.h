@@ -4,16 +4,95 @@
  * Created: 12.03.2020 18:34:12
  *  Author: rekuts
  */ 
-#ifndef _XTIMERS_H_
-#define _XTIMERS_H_
+#ifndef _XTIMER_H_
+#define _XTIMER_H_
 //=================================================================================================================================
 #include <stdint.h>
 #include <stdbool.h>
 #include "tim.h"
+#include "xType.h"
+#include "xList.h"
 //=================================================================================================================================
-#define TIMER3_CLOCK 84000000L
-#define TIMER5_CLOCK (double)84000000
-#define TIMER2_CLOCK 84000000L
+typedef void (*xTimerAction)(xObject context, xObject request);
+//=================================================================================================================================
+typedef union {
+  struct{
+    uint16_t Enable : 1;
+  };
+  uint16_t Value;
+}xTimerRequestHandlerT;
+//=================================================================================================================================
+typedef struct{
+  xTimerAction Action;
+  uint32_t Retention;
+  uint32_t Period;
+  
+  xTimerRequestHandlerT Handler;
+  
+  xObject Object;
+  uint16_t ObjectSize;
+  uint16_t ObjectKey;
+}xTimerRequestT;
+//=================================================================================================================================
+typedef union {
+  struct{
+    uint16_t Add : 1;
+    uint16_t Update : 1;
+    uint16_t Decrement : 1;
+    uint16_t Pause : 1;
+  };
+  uint16_t Value;
+}xTimerHandlerT;
+//=================================================================================================================================
+typedef struct{
+  uint8_t SizeMask;
+  uint8_t TotalIndex;
+  uint8_t HandlerIndex;
+}xTimerStateT;
+//=================================================================================================================================
+typedef struct {
+  volatile xTimerHandlerT Handler;
+  uint16_t Id;
+  
+  xListT Requests;
+  //uint16_t RequestCount;
+}xTimerT;
+//=================================================================================================================================
+#define TIMER_INIT(name, id, count)\
+xTimerRequestT Timer##name##Requests[count];\
+xTimerT Timer##name = {\
+  .Id = id,\
+  .RequestCount = count,\
+  .Requests = Timer##name##Requests\
+}
+//=================================================================================================================================
+void xTimerDecrement(xTimerT* timer);
+void xTimer(xTimerT* timer);
+xTimerRequestT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period);
+extern inline void xTimerHandler();
+//=================================================================================================================================
+typedef struct{
+  uint8_t Time1ms : 1;
+  uint8_t Time10ms : 1;
+  uint8_t Time100ms : 1;
+  uint8_t Time1000ms : 1;
+  uint8_t Time1min : 1;
+}TimerEventT;
+//=================================================================================================================================
+typedef struct{
+  uint8_t Time10ms;
+  uint8_t Time100ms;
+  uint8_t Time1000ms;
+  uint8_t TimeContrloState;
+  uint8_t Time1min;
+}TimersCountersT;
+//=================================================================================================================================
+typedef struct{
+  TimerEventT Events;
+  TimersCountersT Counters;
+}TimerT;
+//=================================================================================================================================
+extern TimerT Timer;
 //=================================================================================================================================
 typedef struct{
   union{
@@ -328,29 +407,6 @@ typedef struct{
   volatile TimOR_T Option; //option register
 }TimStm32_T;
 //=================================================================================================================================
-typedef struct{
-  uint8_t Time1ms : 1;
-  uint8_t Time10ms : 1;
-  uint8_t Time100ms : 1;
-  uint8_t Time1000ms : 1;
-  uint8_t Time1min : 1;
-}TimerEventT;
-//=================================================================================================================================
-typedef struct{
-  uint8_t Time10ms;
-  uint8_t Time100ms;
-  uint8_t Time1000ms;
-  uint8_t TimeContrloState;
-  uint8_t Time1min;
-}TimersCountersT;
-//=================================================================================================================================
-typedef struct{
-  TimerEventT Events;
-  TimersCountersT Counters;
-}TimerT;
-//=================================================================================================================================
-extern TimerT Timer;
-
 extern TimStm32_T *xTimer1;
 extern TimStm32_T *xTimer2;
 extern TimStm32_T *xTimer3;
@@ -361,7 +417,5 @@ extern TimStm32_T *xTimer7;
 extern TimStm32_T *xTimer8;
 extern TimStm32_T *xTimer9;
 extern TimStm32_T *xTimer10;
-
-extern inline void xTimerHandler();
 //=================================================================================================================================
 #endif /* TIMERS_H_ */

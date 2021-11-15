@@ -15,7 +15,7 @@ enum RX_RESULT{
 //=================================================================================================================================
 typedef struct { uint16_t size; uint8_t* ptr; } xRxObjectT;
 //=================================================================================================================================
-typedef int (*xRxEndLineEvent)(uint8_t* object, uint16_t size);
+typedef int (*xRxEventEndLine)(xObject context, uint8_t* object, uint16_t size);
 //=================================================================================================================================
 typedef struct {
   uint16_t Storage : 1;
@@ -29,20 +29,21 @@ typedef struct{
   uint16_t HandlerIndex;
   uint16_t SizeMask;
   volatile uint16_t ReceiveDelay;
-  uint8_t *Buf;
+  uint8_t *Buffer;
 }xRxCircleReceiverT;
 //=================================================================================================================================
 typedef struct{
-  uint16_t Len;
-  uint16_t BytesCount;
   uint8_t* Object;
-  xRxEndLineEvent EndLineCallback;
+  uint16_t Size;
+  uint16_t BytesCount;
+  xRxEventEndLine EventEndLine;
 }xRxObjectReceiverT;
 //=================================================================================================================================
-typedef struct xRxType{
+typedef struct{
     volatile xRxStateT State;
     xRxCircleReceiverT CircleReceiver;
     xRxObjectReceiverT ObjectReceiver;
+    xContext Context;
 }xRxT;
 //=================================================================================================================================
 //void xRxCircleAdd(xRxT* xRX, uint8_t Byte);
@@ -51,18 +52,26 @@ void xRxUpdate(xRxT* rx);
 void xRxClear(xRxT* rx);
 //=================================================================================================================================
 #define xRxCircleAdd(xRX, byte)\
-  xRX.CircleReceiver.Buf[xRX.CircleReceiver.TotalIndex] = byte;\
+  xRX.CircleReceiver.Buffer[xRX.CircleReceiver.TotalIndex] = byte;\
   xRX.CircleReceiver.TotalIndex++;\
   xRX.CircleReceiver.TotalIndex &= xRX.CircleReceiver.SizeMask
 //=================================================================================================================================
 #define RX_BUF_INIT(name)\
-  uint8_t name##_RX_CIRCLE_BUF[name##_RX_CIRCLE_BUF_SIZE + 1];\
+  uint8_t name##_RX_CIRCLE_BUF[name##_RX_CIRCLE_BUF_SIZE_MASK + 1];\
   uint8_t name##_RX_OBJECT_BUF[name##_RX_OBJECT_BUF_SIZE]
 //=================================================================================================================================
 #define RX_OBJECT_RECEIVER_INIT(name, callback)\
-  .ObjectReceiver = { .EndLineCallback = callback, .Object = name##_RX_OBJECT_BUF, .Len = name##_RX_OBJECT_BUF_SIZE }
+  .ObjectReceiver = { .EventEndLine = callback, .Object = name##_RX_OBJECT_BUF, .Size = name##_RX_OBJECT_BUF_SIZE }
 //=================================================================================================================================
 #define RX_CIRCLE_RECEIVER_INIT(name)\
-  .CircleReceiver = { .Buf = name##_RX_CIRCLE_BUF, .SizeMask = name##_RX_CIRCLE_BUF_SIZE }
+  .CircleReceiver = { .Buffer = name##_RX_CIRCLE_BUF, .SizeMask = name##_RX_CIRCLE_BUF_SIZE_MASK }
+//=================================================================================================================================
+#define RX_INIT(name, size_mask_circle_buf, size_object_buf, event_end_line)\
+uint8_t Rx##name##CircleBuf[size_mask_circle_buf + 1];\
+uint8_t Rx##name##ObjectBuf[size_object_buf];\
+xRxT Rx##name = {\
+  .CircleReceiver = { .Buffer = Rx##name##CircleBuf, .SizeMask = size_mask_circle_buf },\
+  .ObjectReceiver = { .EventEndLine = event_end_line, .Object = Rx##name##ObjectBuf, .Size = size_object_buf }\
+}
 //=================================================================================================================================
 #endif

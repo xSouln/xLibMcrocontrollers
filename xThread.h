@@ -10,34 +10,58 @@
 #include <stdlib.h>
 #include <string.h>
 #include "xType.h"
+#include "xList.h"
 //=================================================================================================================================
-typedef struct { xEvt Func; xObject Object; uint16_t Size; } xThreadObjectT;
+typedef struct {
+  xObject Object;
+  uint16_t Size;
+  uint16_t Key;
+} xThreadContentT;
 //=================================================================================================================================
-typedef struct xThreadOptionType{
-  uint8_t Count;
+typedef void (*xThreadAction)(xObject thread, xObject request);
+//=================================================================================================================================
+typedef struct {
+  xThreadAction Action;
+  xObject Object;
+  uint16_t ObjectSize;
+  uint16_t ObjectKey;
+} xThreadRequestT;
+//=================================================================================================================================
+typedef struct{
+  uint8_t SizeMask;
   uint8_t TotalIndex;
-  uint8_t MaxCount;
   uint8_t HandlerIndex;
-}xThreadOptionT;
+}xThreadStateT;
 //=================================================================================================================================
-typedef union xThreadStateType{
+typedef union{
   struct{
     uint8_t Update : 1;
     uint8_t Pause : 1;
     uint8_t IsAdd : 1;
   };
   uint8_t State;
-} xThreadStateT;
+}xThreadHandlerT;
 //=================================================================================================================================
-typedef struct xThreadType{
-  xThreadStateT State;
-  xThreadOptionT Option;
+typedef struct{
+  volatile xThreadHandlerT Handler;
+  //xThreadStateT State;
+  uint16_t Id;
+  xListT Requests;
   
-  void (*Activate)();
-  xThreadObjectT *Lines;  
+  //void (*Activate)();
+  //xThreadRequestT *Requests;  
 }xThreadT;
 //=================================================================================================================================
-void xThread(xThreadT *Thread);
-int8_t xThreadAdd(xThreadT *Thread, xEvt Func, xObject Object);
+#define THREAD_INIT(name, id, size_mask, activate)\
+xThreadRequestT Thread##name##Requests[size_mask + 1];\
+xThreadT Thread##name = {\
+  .Id = id,\
+  .State = { .SizeMask = size_mask },\
+  .Requests = Thread##name##Requests,\
+  .Activate = activate\
+}
+//=================================================================================================================================
+void xThread(xThreadT *thread);
+int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key);
 //=================================================================================================================================
 #endif /* XTHREAD_H_ */

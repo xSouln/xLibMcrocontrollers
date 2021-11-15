@@ -7,16 +7,16 @@
 #include "xThread.h"
 //=================================================================================================================================
 #define TX_BUF_INIT(name)\
-uint8_t name##_TX_CIRCLE_BUF[name##_TX_CIRCLE_BUF_SIZE + 1]
+uint8_t name##_TX_CIRCLE_BUF[name##_TX_CIRCLE_BUF_SIZE_MASK + 1]
 
 #define TX_BINDING(name, transmit_action)\
-.State = { .SizeMask = name##_TX_CIRCLE_BUF_SIZE },\
-.Packet = { .ptr = name##_TX_CIRCLE_BUF },\
+.State = { .SizeMask = name##_TX_CIRCLE_BUF_SIZE_MASK },\
+.Buffer = name##_TX_CIRCLE_BUF,\
 .TransmitAction = transmit_action
 //=================================================================================================================================
 typedef struct { uint8_t* ptr; uint16_t size; } xPacketT;
 //=================================================================================================================================
-typedef bool (*TransmitActionT)(xPacketT *print);
+typedef bool (*TransmitActionT)(xObject context, uint8_t* ptr, uint16_t size);
 //=================================================================================================================================
 #define xTX_SET_MASK_SIZE (bits)(~(0xffff << bits))
 //=================================================================================================================================
@@ -45,8 +45,8 @@ typedef struct{
   volatile xTxHandlerT Handler;
   xTxStateT State;
   TransmitActionT TransmitAction;
-
-  xPacketT Packet;
+  xContext Context;
+  uint8_t* Buffer;
   uint16_t Crc;
 }xTxT;
 //=================================================================================================================================
@@ -55,8 +55,16 @@ void xTxPutByte(xTxT *Tx, uint8_t byte);
 xPacketT xTxGetPacket(xTxT *Tx);
 //=================================================================================================================================
 #define xTxSend(xTx, reg)\
-  reg = xTx.Packet.ptr[xTx.State.HandlerIndex];\
+  reg = xTx.Buffer[xTx.State.HandlerIndex];\
   xTx.State.HandlerIndex++;\
   xTx.State.HandlerIndex &= xTx.State.SizeMask
+//=================================================================================================================================
+#define TX_INIT(name, size_mask_circle_buf, transmit_action)\
+uint8_t Tx##name##CircleBuf[size_mask_circle_buf + 1];\
+xTxT Tx##name = {\
+  .State = { .SizeMask = size_mask_circle_buf },\
+  .Buffer = Tx##name##CircleBuf,\
+  .TransmitAction = transmit_action\
+}
 //=================================================================================================================================
 #endif

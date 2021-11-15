@@ -6,34 +6,64 @@
  */ 
 #include "xThread.h"
 //=================================================================================================================================
-void xThread(xThreadT *Thread){
-  if(!Thread->State.IsAdd){
-    Thread->State.Update = true;
-    if(Thread->Option.Count && !Thread->State.Pause){
-      if(Thread->Lines[Thread->Option.HandlerIndex].Func) { Thread->Lines[Thread->Option.HandlerIndex].Func(Thread->Lines[Thread->Option.HandlerIndex].Object); }
-      Thread->Lines[Thread->Option.HandlerIndex].Func = 0;
-      if(++Thread->Option.HandlerIndex == Thread->Option.MaxCount) { Thread->Option.HandlerIndex = 0; }
-      Thread->Option.Count--;
+/*
+void xThread(xThreadT *thread){    
+  if(thread->State.HandlerIndex != thread->State.TotalIndex){
+    thread->Handler.Update = true;
+    
+    if(thread->Requests[thread->State.HandlerIndex].Action != 0){
+      thread->Requests[thread->State.HandlerIndex].Action(thread, &thread->Requests[thread->State.HandlerIndex]);
     }
-    Thread->State.Update = false;
+    thread->State.HandlerIndex++;
+    thread->State.HandlerIndex &= thread->State.SizeMask;
+    
+    thread->Handler.Update = false;
   }
 }
 //=================================================================================================================================
-int8_t xThreadAdd(xThreadT *Thread, xEvt Func, xObject Object){
-  xThreadObjectT ThreadLine = { .Func = Func, .Object = Object };
-  int8_t id = -1;
-  if(!Thread->State.IsAdd && Thread->Option.Count < Thread->Option.MaxCount){
-    Thread->State.IsAdd = true;
-    id = Thread->Option.TotalIndex;
+int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key){
+  thread->Handler.IsAdd = true;
+  
+  thread->Requests[thread->State.TotalIndex].Action = action;
+  thread->Requests[thread->State.TotalIndex].Object = object;
+  thread->Requests[thread->State.TotalIndex].ObjectSize = size;
+  thread->Requests[thread->State.TotalIndex].ObjectKey = key;
+  
+  thread->State.TotalIndex++;
+  thread->State.TotalIndex &= thread->State.SizeMask;
+  
+  thread->Handler.IsAdd = false;
+  return 0;
+}
+*/
+//=================================================================================================================================
+void xThread(xThreadT *thread){    
+  if(thread->Requests.Count){
+    thread->Handler.Update = true;
     
-    Thread->Lines[id] = ThreadLine;
+    while(thread->Requests.Count){
+      xThreadRequestT* request = xListRemoveAt(&thread->Requests, 0);
+      request->Action(thread, request);
+      free(request);
+    }
     
-    if(++Thread->Option.TotalIndex == Thread->Option.MaxCount) { Thread->Option.TotalIndex = 0; }
-    Thread->Option.Count++;
-    
-    Thread->State.IsAdd = false;
-    return true;
+    thread->Handler.Update = false;
   }
-  return id;
+}
+//=================================================================================================================================
+int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key){
+  thread->Handler.IsAdd = true;
+  
+  xThreadRequestT* request = (xThreadRequestT*)calloc(1, sizeof(xThreadRequestT));
+  
+  request->Action = action;
+  request->Object = object;
+  request->ObjectSize = size;
+  request->ObjectKey = key;
+  
+  xListAdd(&thread->Requests, request);
+  
+  thread->Handler.IsAdd = false;
+  return 0;
 }
 //=================================================================================================================================
