@@ -20,7 +20,7 @@ typedef union {
     uint16_t Enable : 1;
   };
   uint16_t Value;
-}xTimerRequestHandlerT;
+}xTimerRequestStateT;
 //=================================================================================================================================
 typedef struct{
   xTimerAction Action;
@@ -28,10 +28,10 @@ typedef struct{
   uint32_t Period;
   
   xObject Object;
-  uint16_t ObjectSize;
-  uint16_t ObjectKey;
   
-  xTimerRequestHandlerT Handler;
+  uint16_t Key;  
+  
+  xTimerRequestStateT State;
 }xTimerRequestT;
 //=================================================================================================================================
 typedef union {

@@ -40,7 +40,7 @@ void xTimerDecrement(xTimerT* timer)
   
   while(element){
     request = element->Value;    
-    if(request->Retention && request->Handler.Enable){ request->Retention--; }
+    if(request->Retention && request->State.Enable){ request->Retention--; }
     element = element->Next;
   }
   
@@ -64,19 +64,17 @@ void xTimer(xTimerT* timer)
       if(request->Period)
       {
         request->Retention = request->Period;
-      }
-      
+      }      
       else
       {
-        xListRemoveAt(&timer->Requests, i);
+        element = xListRemoveElement(&timer->Requests, element);
         free(request);
         goto end_while;
       }
     }
     element = element->Next;
   end_while:;
-  }  
-  //timer->Handler.Update = false;
+  }
 }
 //=================================================================================================================================
 xTimerRequestT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period){

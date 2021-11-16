@@ -12,7 +12,7 @@ typedef struct{
 
 typedef struct{
   xListElementT* Head;
-  xListElementT* Tail; 
+  xListElementT* Tail;
   uint16_t Count;
 }xListT;
 

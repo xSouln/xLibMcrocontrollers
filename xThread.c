@@ -41,7 +41,8 @@ void xThread(xThreadT *thread){
   //thread->Handler.Update = true;
     
   while(thread->Requests.Count){
-    xThreadRequestT* request = xListRemoveAt(&thread->Requests, 0);
+    xThreadRequestT* request = thread->Requests.Head->Value;
+    xListRemoveAt(&thread->Requests, 0);
     request->Action(thread, request);
     free(request);
   }
