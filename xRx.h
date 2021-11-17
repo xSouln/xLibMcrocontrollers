@@ -67,11 +67,11 @@ void xRxClear(xRxT* rx);
   .CircleReceiver = { .Buffer = name##_RX_CIRCLE_BUF, .SizeMask = name##_RX_CIRCLE_BUF_SIZE_MASK }
 //=================================================================================================================================
 #define RX_INIT(name, size_mask_circle_buf, size_object_buf, event_end_line)\
-uint8_t Rx##name##CircleBuf[size_mask_circle_buf + 1];\
-uint8_t Rx##name##ObjectBuf[size_object_buf];\
-xRxT Rx##name = {\
-  .CircleReceiver = { .Buffer = Rx##name##CircleBuf, .SizeMask = size_mask_circle_buf },\
-  .ObjectReceiver = { .EventEndLine = event_end_line, .Object = Rx##name##ObjectBuf, .Size = size_object_buf }\
+uint8_t name##_RX_CIRCLE_BUF[size_mask_circle_buf + 1];\
+uint8_t name##_RX_OBJECT_BUF[size_object_buf];\
+xRxT name##_RX = {\
+  .CircleReceiver = { .Buffer = name##_RX_CIRCLE_BUF, .SizeMask = size_mask_circle_buf },\
+  .ObjectReceiver = { .EventEndLine = event_end_line, .Object = name##_RX_OBJECT_BUF, .Size = size_object_buf }\
 }
 //=================================================================================================================================
 #endif

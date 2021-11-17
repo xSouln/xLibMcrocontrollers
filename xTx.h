@@ -6,14 +6,6 @@
 #include <stdbool.h>
 #include "xThread.h"
 //=================================================================================================================================
-#define TX_BUF_INIT(name)\
-uint8_t name##_TX_CIRCLE_BUF[name##_TX_CIRCLE_BUF_SIZE_MASK + 1]
-
-#define TX_BINDING(name, transmit_action)\
-.State = { .SizeMask = name##_TX_CIRCLE_BUF_SIZE_MASK },\
-.Buffer = name##_TX_CIRCLE_BUF,\
-.TransmitAction = transmit_action
-//=================================================================================================================================
 typedef struct { uint8_t* ptr; uint16_t size; } xPacketT;
 //=================================================================================================================================
 typedef bool (*TransmitActionT)(xObject context, uint8_t* ptr, uint16_t size);
@@ -59,11 +51,19 @@ xPacketT xTxGetPacket(xTxT *Tx);
   xTx.State.HandlerIndex++;\
   xTx.State.HandlerIndex &= xTx.State.SizeMask
 //=================================================================================================================================
+#define TX_BUF_INIT(name)\
+uint8_t name##_TX_CIRCLE_BUF[name##_TX_CIRCLE_BUF_SIZE_MASK + 1]
+
+#define TX_BINDING(name, transmit_action)\
+.State = { .SizeMask = name##_TX_CIRCLE_BUF_SIZE_MASK },\
+.Buffer = name##_TX_CIRCLE_BUF,\
+.TransmitAction = transmit_action
+//=================================================================================================================================
 #define TX_INIT(name, size_mask_circle_buf, transmit_action)\
-uint8_t Tx##name##CircleBuf[size_mask_circle_buf + 1];\
-xTxT Tx##name = {\
+uint8_t name##_TX_CIRCLE_BUF[size_mask_circle_buf + 1];\
+xTxT name##_TX = {\
   .State = { .SizeMask = size_mask_circle_buf },\
-  .Buffer = Tx##name##CircleBuf,\
+  .Buffer = name##_TX_CIRCLE_BUF,\
   .TransmitAction = transmit_action\
 }
 //=================================================================================================================================
