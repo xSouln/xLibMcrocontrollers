@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include "xType.h"
 //=================================================================================================================================
-typedef struct{
+typedef struct xListElementT
+{
   xObject Value;
   xObject Next;
 }xListElementT;
 
-typedef struct{
+typedef struct xListT
+{
   xListElementT* Head;
   xListElementT* Tail;
   uint16_t Count;
