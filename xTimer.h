@@ -13,14 +13,14 @@
 #include "xType.h"
 #include "xList.h"
 //=================================================================================================================================
-typedef void (*xTimerAction)(xObject context, xObject request);
+typedef void (*xTimerAction)(xObject context, xObject task);
 //=================================================================================================================================
 typedef union {
   struct{
     uint16_t Enable : 1;
   };
   uint16_t Value;
-}xTimerRequestStateT;
+}xTimerTaskStateT;
 //=================================================================================================================================
 typedef struct{
   xTimerAction Action;
@@ -31,8 +31,8 @@ typedef struct{
   
   uint16_t Key;  
   
-  xTimerRequestStateT State;
-}xTimerRequestT;
+  xTimerTaskStateT State;
+}xTimerTaskT;
 //=================================================================================================================================
 typedef union {
   struct{
@@ -54,21 +54,22 @@ typedef struct {
   volatile xTimerHandlerT Handler;
   uint16_t Id;
   
-  xListT Requests;
+  xListT Tasks;
   //uint16_t RequestCount;
 }xTimerT;
 //=================================================================================================================================
 #define TIMER_INIT(name, id, count)\
-xTimerRequestT Timer##name##Requests[count];\
+xTimerTaskT Timer##name##Tasks[count];\
 xTimerT Timer##name = {\
   .Id = id,\
   .RequestCount = count,\
-  .Requests = Timer##name##Requests\
+  .Tasks = Timer##name##Tasks\
 }
 //=================================================================================================================================
-void xTimerDecrement(xTimerT* timer);
-void xTimer(xTimerT* timer);
-xTimerRequestT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period);
+extern inline void xTimerDecrement(xTimerT* timer);
+extern inline void xTimerDispose(xTimerT* timer);
+extern inline void xTimer(xTimerT* timer);
+xTimerTaskT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period);
 extern inline void xTimerHandler();
 //=================================================================================================================================
 typedef struct{

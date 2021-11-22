@@ -25,7 +25,7 @@ typedef struct {
   xObject Object;
   uint16_t ObjectSize;
   uint16_t ObjectKey;
-} xThreadRequestT;
+} xThreadTaskT;
 //=================================================================================================================================
 typedef struct{
   uint8_t SizeMask;
@@ -46,22 +46,23 @@ typedef struct{
   volatile xThreadHandlerT Handler;
   //xThreadStateT State;
   uint16_t Id;
-  xListT Requests;
+  xListT Tasks;
   
   //void (*Activate)();
   //xThreadRequestT *Requests;  
 }xThreadT;
 //=================================================================================================================================
 #define THREAD_INIT(name, id, size_mask, activate)\
-xThreadRequestT Thread##name##Requests[size_mask + 1];\
+xThreadTaskT Thread##name##Tasks[size_mask + 1];\
 xThreadT Thread##name = {\
   .Id = id,\
   .State = { .SizeMask = size_mask },\
-  .Requests = Thread##name##Requests,\
+  .Tasks = Thread##name##Tasks,\
   .Activate = activate\
 }
 //=================================================================================================================================
 void xThread(xThreadT *thread);
-int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key);
+void xThreadDispose(xThreadT *thread);
+xThreadTaskT* xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key);
 //=================================================================================================================================
 #endif /* XTHREAD_H_ */

@@ -32,43 +32,41 @@ inline void xTimerHandler(){
   }
 }
 //=================================================================================================================================
-void xTimerDecrement(xTimerT* timer)
+inline void xTimerDecrement(xTimerT* timer)
 {
-  xTimerRequestT *request;
-  xListElementT* element = timer->Requests.Head;
+  xListElementT* element = timer->Tasks.Head;
   //timer->Handler.Decrement = true;
   
   while(element){
-    request = element->Value;    
-    if(request->Retention && request->State.Enable){ request->Retention--; }
+    xTimerTaskT* task = element->Value;    
+    if(task->Retention && task->State.Enable){ task->Retention--; }
     element = element->Next;
   }
   
   //timer->Handler.Decrement = false;
 }
 //=================================================================================================================================
-void xTimer(xTimerT* timer)
+inline void xTimer(xTimerT* timer)
 {
-  xTimerRequestT *request;
-  xListElementT* element = timer->Requests.Head;
+  xListElementT* element = timer->Tasks.Head;
   //timer->Handler.Update = true;
   
   while(element)
   {
-    request = element->Value;
+    xTimerTaskT* task = element->Value;
     
-    if(request->Action && !request->Retention)
+    if(task->Action && !task->Retention)
     {
-      request->Action(timer, request);
+      task->Action(timer, task);
       
-      if(request->Period)
+      if(task->Period)
       {
-        request->Retention = request->Period;
+        task->Retention = task->Period;
       }      
       else
       {
-        element = xListRemoveElement(&timer->Requests, element);
-        free(request);
+        element = xListRemoveElement(&timer->Tasks, element);
+        free(task);
         goto end_while;
       }
     }
@@ -77,16 +75,33 @@ void xTimer(xTimerT* timer)
   }
 }
 //=================================================================================================================================
-xTimerRequestT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period){
+inline void xTimerDispose(xTimerT* timer)
+{
+  xListElementT* element = timer->Tasks.Head;
+  xListElementT* next;
+  
+  while(element)
+  {
+    next = element->Next;
+    free(element->Value);
+    free(element);
+    element = next;
+    timer->Tasks.Count--;
+  }
+}
+//=================================================================================================================================
+xTimerTaskT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period){
   //timer->Handler.Add = true;
   
-  xTimerRequestT* request = calloc(1, sizeof(xTimerRequestT));
-  request->Retention = retention;
-  request->Period = period;
-  request->Action = action;
-  xListAdd(&timer->Requests, request);
-  
+  xTimerTaskT* task = calloc(1, sizeof(xTimerTaskT));
+  if(task)
+  {
+    task->Retention = retention;
+    task->Period = period;
+    task->Action = action;
+    xListAdd(&timer->Tasks, task);
+  }
   //timer->Handler.Add = false;
-  return request;
+  return task;
 }
 //=================================================================================================================================

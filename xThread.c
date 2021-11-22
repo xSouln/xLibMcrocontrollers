@@ -37,32 +37,56 @@ int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16
 }
 */
 //=================================================================================================================================
-void xThread(xThreadT *thread){    
+void xThread(xThreadT *thread)
+{    
   //thread->Handler.Update = true;
     
-  while(thread->Requests.Count){
-    xThreadRequestT* request = thread->Requests.Head->Value;
-    xListRemoveAt(&thread->Requests, 0);
-    request->Action(thread, request);
-    free(request);
+  while(thread->Tasks.Count)
+  {
+    xThreadTaskT* task = thread->Tasks.Head->Value;
+    xListRemoveAt(&thread->Tasks, 0);
+    task->Action(thread, task);
+    free(task);
   }
   
   //thread->Handler.Update = false;
 }
 //=================================================================================================================================
-int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key){
+void xThreadDispose(xThreadT *thread)
+{    
+  //thread->Handler.Update = true;
+  xListElementT* element = thread->Tasks.Head;
+  xListElementT* next;
+  
+  while(element)
+  {
+    next = element->Next;
+    free(element->Value);
+    free(element);
+    element = next;
+    thread->Tasks.Count--;
+  }
+  
+  //thread->Handler.Update = false;
+}
+//=================================================================================================================================
+xThreadTaskT* xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key)
+{
   thread->Handler.IsAdd = true;
   
-  xThreadRequestT* request = calloc(1, sizeof(xThreadRequestT));
+  xThreadTaskT* request = calloc(1, sizeof(xThreadTaskT));
   
-  request->Action = action;
-  request->Object = object;
-  request->ObjectSize = size;
-  request->ObjectKey = key;
-  
-  xListAdd(&thread->Requests, request);
+  if(request)
+  {
+    request->Action = action;
+    request->Object = object;
+    request->ObjectSize = size;
+    request->ObjectKey = key;
+    
+    xListAdd(&thread->Tasks, request);
+  }
   
   thread->Handler.IsAdd = false;
-  return 0;
+  return request;
 }
 //=================================================================================================================================
