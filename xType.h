@@ -27,10 +27,11 @@ enum ERRORS{
   ERROR_REQUEST,
   ERROR_RESOLUTION,
   UNKNOWN_COMMAND,
+  TIMEOUT,
   BUSY,
   OUTSIDE,
   ERROR_ACTION,
-  ERROR_POSITION
+  LOCKED
 };
 //=================================================================================================================================
 typedef void* xObject;
