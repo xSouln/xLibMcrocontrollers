@@ -74,7 +74,7 @@ static char RESPONSE_END[] = "\r";
 
 #define RESPONSE_END_SIZE (sizeof(RESPONSE_END) / sizeof(RESPONSE_END[0]) - 1)
 #define sizeof_str(str)(sizeof(str) / sizeof(str[0]) - 1)
-#define sizeof_array(array)(sizeof(array) / sizeof(array[0]) - 1)
+#define sizeof_array(array)(sizeof(array) / sizeof(array[0]))
 //=================================================================================================================================
 typedef union{
   struct{
