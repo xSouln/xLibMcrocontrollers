@@ -20,18 +20,18 @@ typedef union{
   double Value;
 }xDoubleT;
 //=================================================================================================================================
-enum ERRORS{
+enum ERRORS
+{
   ACCEPT = 0,
   ERROR_DATA,
   ERROR_CONTENT_SIZE,
   ERROR_REQUEST,
   ERROR_RESOLUTION,
   UNKNOWN_COMMAND,
-  TIMEOUT,
   BUSY,
   OUTSIDE,
   ERROR_ACTION,
-  LOCKED
+  //ERROR_POSITION
 };
 //=================================================================================================================================
 typedef void* xObject;

@@ -1,8 +1,8 @@
 //=================================================================================================================================
 #include <string.h>
-#include "xResponse.h"
+#include "xRequest.h"
 //=================================================================================================================================
-int8_t xResponseIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length){    
+int8_t xRequestIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length){    
   for(uint8_t i = 0; i < commands_count; i++)
   {
     if(data_length >= commands[i].HeaderLength)
