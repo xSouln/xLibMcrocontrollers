@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "xType.h"
-#include "BootTypes.h"
+#include "Bootloader_Types.h"
 //===================================================================================================
 static uint32_t FLASH_PAGES[] = 
 {

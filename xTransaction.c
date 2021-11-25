@@ -1,8 +1,8 @@
 //=================================================================================================================================
 #include <string.h>
-#include "xRequest.h"
+#include "xTransaction.h"
 //=================================================================================================================================
-int8_t xRequestIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length){    
+int8_t xTransactionIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length){    
   for(uint8_t i = 0; i < commands_count; i++)
   {
     if(data_length >= commands[i].HeaderLength)
@@ -16,7 +16,7 @@ int8_t xRequestIdentify(xObject context, xCommandT commands[], uint8_t commands_
           data_length -= commands[i].HeaderLength;
           break;
         }		
-        if (commands[i].Receiver) { commands[i].Receiver(context, data, data_length); }
+        if (commands[i].Request) { commands[i].Request(context, data, data_length); }
         return i;
       }
     }
