@@ -98,7 +98,6 @@ int8_t xFlashWrite(uint32_t address, xObject data, uint16_t len, uint32_t timeou
   while(i < len && address < APP_END_ADDRESS)
   {
     uint32_t value;
-    //uint8_t value;
     
     value = ptr[i + 3];
     value <<= 8;

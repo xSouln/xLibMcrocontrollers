@@ -124,8 +124,7 @@ BootloaderT Bootloader =
     .BootEndAddress = BOOT_END_ADDRESS,
     
     .AppStartAddress = APP_START_ADDRESS,
-    .AppEndAddress = APP_END_ADDRESS,
-    //.PageSize = SYSTEM_FLASH_PAGE_SIZE
+    .AppEndAddress = APP_END_ADDRESS
   },
 };
 //=================================================================================================================================
