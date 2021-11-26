@@ -76,14 +76,16 @@ void MasPutVolume4Byte(uint8_t *MasPtr, uint64_t Vol){
   MasPtr[3] = (Vol & 0x000000ff);
 }
 //=================================================================================================================================
-void MasPutVolume4ByteStrHex(uint8_t *MasPtr, uint64_t Vol){
+void MasPutVolume4ByteStrHex(uint8_t *MasPtr, uint64_t Vol)
+{
   MasPtr[0] = (Vol & 0xff000000) >> 24;
   MasPtr[1] = (Vol & 0x00ff0000) >> 16;
   MasPtr[2] = (Vol & 0x0000ff00) >> 8;
   MasPtr[3] = (Vol & 0x000000ff);
 }
 //=================================================================================================================================
-uint8_t xConverterHex4(uint8_t byte){
+uint8_t xConverterHex4(uint8_t byte)
+{
   byte &= 0x0F;
   if(byte < 10) { byte += 0x30; }
   else { byte += 0x37; }

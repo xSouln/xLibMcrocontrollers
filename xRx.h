@@ -8,7 +8,8 @@
 #include "xThread.h"
 //=================================================================================================================================
 #define xRX_SET_MASK_SIZE (size)(~(0xffff << size))
-enum RX_RESULT{
+enum RX_RESULT
+{
   RX_STORAGE,
   RX_RESET,
 };
@@ -17,11 +18,13 @@ typedef struct { uint16_t size; uint8_t* ptr; } xRxObjectT;
 //=================================================================================================================================
 typedef int (*xRxEventEndLine)(xObject context, uint8_t* object, uint16_t size);
 //=================================================================================================================================
-typedef struct {
+typedef struct{
   uint16_t Storage : 1;
   uint16_t BufLoaded : 1;
   uint16_t ReceiveComlite : 1;
   uint16_t EndLineControl : 1;
+  
+  uint16_t CrcEnable : 1;
 }xRxStateT;
 //=================================================================================================================================
 typedef struct{
@@ -43,7 +46,7 @@ typedef struct{
     volatile xRxStateT State;
     xRxCircleReceiverT CircleReceiver;
     xRxObjectReceiverT ObjectReceiver;
-    xContext Context;
+    xObject Context;
 }xRxT;
 //=================================================================================================================================
 //void xRxCircleAdd(xRxT* xRX, uint8_t Byte);

@@ -2,7 +2,7 @@
 #include <string.h>
 #include "xTransaction.h"
 //=================================================================================================================================
-int8_t xTransactionIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length){    
+xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length){    
   for(uint8_t i = 0; i < commands_count; i++)
   {
     if(data_length >= commands[i].HeaderLength)
@@ -17,11 +17,11 @@ int8_t xTransactionIdentify(xObject context, xCommandT commands[], uint8_t comma
           break;
         }		
         if (commands[i].Request) { commands[i].Request(context, data, data_length); }
-        return i;
+        return &commands[i];
       }
     }
   }
-  return -1;
+  return 0;
 }
 //=================================================================================================================================
 int8_t xHeaderIdentify(xObject context, xObject header, uint8_t header_length, volatile uint8_t *data, uint16_t data_length){    

@@ -27,8 +27,10 @@ typedef union{
     uint16_t IsAdd : 1;
     uint16_t IsUpdate : 1;
     uint16_t TransferComplite : 1;
+    
     uint16_t TxBufFull : 1;
     uint16_t Lock : 1;
+    uint16_t CrcEnable : 1;
   };
   uint16_t Value;
 }xTxHandlerT;

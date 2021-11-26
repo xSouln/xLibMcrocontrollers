@@ -12,7 +12,7 @@
 #include "xType.h"
 #include "xTx.h"
 //=================================================================================================================================
-typedef enum { XBASE_MODE_OBJECT, XBASE_MODE_CONTENT } XCBASE_MODE_ENUM;
+typedef enum { XBASE_MODE_OBJECT, XBASE_MODE_CONTENT } E_TRANSACTION_MODE;
 //=================================================================================================================================
 typedef union{
   struct{
@@ -34,12 +34,10 @@ typedef struct{
   xTransactionRequest Request;
 }xCommandT;
 //=================================================================================================================================
-int8_t xTransactionIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length);
+xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length);
 //=================================================================================================================================
 typedef struct{
-  xTransactionHandlerT Handler;
-  //char* Header;
-  //uint16_t HeaderSize;
+  //xTransactionHandlerT Handler;
   uint16_t Id;
   xTransactionAction Action;
   xTransactionResponse Response;
@@ -52,6 +50,14 @@ typedef struct{
   .Response = (xTransactionResponse)response,\
   .Action = (xTransactionAction)control,\
   .Content = { .obj = &content, .size = sizeof(content) }\
+}
+
+#define NEW_COMMAND(header, mode, request)\
+{\
+  .Header = header,\
+  .HeaderLength = sizeof_str(header),\
+  .Mode = mode,\
+  .Request = (xTransactionRequest)request\
 }
 //=================================================================================================================================
 //=================================================================================================================================
