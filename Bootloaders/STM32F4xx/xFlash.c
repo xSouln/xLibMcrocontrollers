@@ -1,17 +1,18 @@
-//=================================================================================================
+//==============================================================================
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-//=================================================================================================
+//==============================================================================
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_flash.h"
 #include "xFlash.h"
-//=================================================================================================
+#include "Bootloader.h"
+//==============================================================================
 uint32_t xflash_start_address;
 uint32_t xflash_end_address;
 uint32_t xflash_sector;
-//=================================================================================================
+//==============================================================================
 int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t timeout)
 {
   uint32_t sector = 0;
@@ -26,7 +27,7 @@ int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t t
   
   if(!xFlash.Status.FlashUnlocked) { xFlash.Status.OperationResult = BOOT_LOCKED; goto end; }
   
-  while(FLASH_PAGES[sector] < start_address && sector < 11)
+  while(FLASH_PAGES[sector] < start_address && sector < sizeof_array(FLASH_PAGES) - 2)
   {
     sector++;
   }
@@ -40,7 +41,7 @@ int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t t
   
   if(READ_BIT(FLASH->SR, FLASH_SR_EOP)) { WRITE_REG(FLASH->SR, FLASH_SR_EOP); }
   
-  while(start_address < end_address && sector < 12)
+  while(start_address < end_address && sector < sizeof_array(FLASH_PAGES) - 1)
   {
     CLEAR_BIT(FLASH->CR, FLASH_CR_PSIZE);
     FLASH->CR |= FLASH_PSIZE_WORD;
@@ -71,7 +72,7 @@ int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t t
   xFlash.Status.Erase = false;
   return xFlash.Status.OperationResult;
 }
-//=================================================================================================
+//==============================================================================
 int8_t xFlashWrite(uint32_t address, xObject data, uint16_t len, uint32_t timeout)
 {
   uint16_t i = 0;
@@ -129,7 +130,7 @@ int8_t xFlashWrite(uint32_t address, xObject data, uint16_t len, uint32_t timeou
   xFlash.Status.Write = false;
   return xFlash.Status.OperationResult;
 }
-//=================================================================================================
+//==============================================================================
 int8_t xFlashRead(uint32_t address, volatile uint8_t* data, uint16_t len)
 {
   volatile uint8_t* ptr = (volatile uint8_t*)address;
@@ -144,7 +145,7 @@ int8_t xFlashRead(uint32_t address, volatile uint8_t* data, uint16_t len)
   xFlash.Status.Read = false;
   return BOOT_ACCEPT;
 }
-//=================================================================================================
+//==============================================================================
 uint16_t xFlashGetCrc(uint32_t start_address, uint32_t end_address)
 {
   uint16_t crc = 0;
@@ -157,7 +158,7 @@ uint16_t xFlashGetCrc(uint32_t start_address, uint32_t end_address)
   xFlash.Status.Read = false;
   return crc;
 }
-//=================================================================================================
+//==============================================================================
 int8_t xFlashSetLock(bool state)
 {
   xFlash.Status.FlashUnlocked = !state;
@@ -177,6 +178,6 @@ int8_t xFlashSetLock(bool state)
   
   return xFlash.Status.OperationResult;
 }
-//=================================================================================================
+//==============================================================================
 xFlashT xFlash;
-//=================================================================================================
+//==============================================================================

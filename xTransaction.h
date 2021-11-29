@@ -12,7 +12,7 @@
 #include "xType.h"
 #include "xTx.h"
 //=================================================================================================================================
-typedef enum { XBASE_MODE_OBJECT, XBASE_MODE_CONTENT } E_TRANSACTION_MODE;
+typedef enum { TRANSACTION_MODE_OBJECT, TRANSACTION_MODE_CONTENT } TRANSACTION_MODE_E;
 //=================================================================================================================================
 typedef union{
   struct{
@@ -50,6 +50,13 @@ typedef struct{
   .Response = (xTransactionResponse)response,\
   .Action = (xTransactionAction)control,\
   .Content = { .obj = &content, .size = sizeof(content) }\
+}
+
+#define NEW_TRANSACTION1(id, response, control)\
+{\
+  .Id = id,\
+  .Response = (xTransactionResponse)response,\
+  .Action = (xTransactionAction)control\
 }
 
 #define NEW_COMMAND(header, mode, request)\

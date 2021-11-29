@@ -2,8 +2,10 @@
 #include <string.h>
 #include "xTransaction.h"
 //=================================================================================================================================
-xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length){    
-  for(uint8_t i = 0; i < commands_count; i++)
+xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t commands_count, uint8_t data[], uint16_t data_length)
+{
+  uint8_t i = 0;
+  while(i < commands_count && commands[i].Header)
   {
     if(data_length >= commands[i].HeaderLength)
     {
@@ -11,7 +13,7 @@ xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t c
       {        
         switch(commands[i].Mode)
         {
-          case XBASE_MODE_OBJECT:
+          case TRANSACTION_MODE_OBJECT:
           data += commands[i].HeaderLength;
           data_length -= commands[i].HeaderLength;
           break;
@@ -20,6 +22,7 @@ xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t c
         return &commands[i];
       }
     }
+    i++;
   }
   return 0;
 }
