@@ -12,7 +12,7 @@
 //#include "stm32f1xx_hal_flash_ex.h"
 extern void AppMain();
 //==============================================================================
-int16_t ActionTryWrite(xObject context, RequestWriteT* request, uint16_t object_size)
+int16_t ActionTryWrite(xRxT* rx, xObject context, RequestWriteT* request, uint16_t object_size)
 {
   if(!request){ return BOOT_ERROR_REQUEST; }
   if(request->StartAddress < BOOT_END_ADDRESS){ return BOOT_OUTSIDE; }
@@ -30,7 +30,7 @@ int16_t ActionTryRead(xObject context, RequestReadT* request, uint16_t object_si
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryErase(xObject context, RequestEraseT* request, uint16_t object_size)
+int16_t ActionTryErase(xRxT* rx, xObject context, RequestEraseT* request, uint16_t object_size)
 {
   if(!request){ return BOOT_ERROR_REQUEST; }
   if(request->StartAddress < BOOT_END_ADDRESS){ return BOOT_OUTSIDE; }
@@ -38,14 +38,14 @@ int16_t ActionTryErase(xObject context, RequestEraseT* request, uint16_t object_
   return xFlashErasePages(request->StartAddress, request->EndAddress, 2000);
 }
 //==============================================================================
-int16_t ActionSetLockState(xObject context, uint8_t* request)
+int16_t ActionSetLockState(xRxT* rx, xObject context, uint8_t* request)
 {
   if(!request){ return BOOT_ERROR_REQUEST; }
   
   return xFlashSetLock(*request > 0);
 }
 //==============================================================================
-int16_t ActionTryJumpToMain(xObject context)
+int16_t ActionTryJumpToMain(xRxT* rx, xObject context)
 {
   if(!Bootloader.AppInfo.Status.BootIsEnable){ return BOOT_ERROR_RESOLUTION; }  
   Bootloader.AppInfo.Status.JumpToMain = true;
@@ -53,9 +53,9 @@ int16_t ActionTryJumpToMain(xObject context)
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryUpdateInfo(xObject context)
+int16_t ActionTryUpdateInfo(xRxT* rx, xObject context)
 {
-  xFlashRead(BOOT_END_ADDRESS, (volatile uint8_t*)&Bootloader.FirmwareInfo, sizeof(Bootloader.FirmwareInfo));
+  xFlashRead(BOOT_END_ADDRESS, &Bootloader.FirmwareInfo, sizeof(Bootloader.FirmwareInfo));
   
   Bootloader.AppInfo.Crc = xFlashGetCrc(Bootloader.FirmwareInfo.StartAddress, Bootloader.FirmwareInfo.EndAddress);
   Bootloader.AppInfo.Status.AppCrcError = Bootloader.AppInfo.Crc != Bootloader.FirmwareInfo.Crc;
@@ -80,13 +80,13 @@ int16_t ActionReadCrc(xObject context, RequestEraseT* request, uint16_t object_s
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryReset(xObject context)
+int16_t ActionTryReset(xRxT* rx, xObject context)
 {
   Bootloader.AppInfo.Status.Reset = true;
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryJumpToBoot(xObject context)
+int16_t ActionTryJumpToBoot(xRxT* rx, xObject context)
 {
   if(Bootloader.AppInfo.Status.BootIsEnable){ return BOOT_ERROR_RESOLUTION; }
   Bootloader.AppInfo.Status.JumpToBoot = true;
@@ -94,7 +94,7 @@ int16_t ActionTryJumpToBoot(xObject context)
   xFlashSetLock(false);
   
   FirmwareInfoT FirmwareInfo;
-  xFlashRead(BOOT_END_ADDRESS, (volatile uint8_t*)&FirmwareInfo, sizeof(FirmwareInfo));
+  xFlashRead(BOOT_END_ADDRESS, &FirmwareInfo, sizeof(FirmwareInfo));
   
   FirmwareInfo.Requests.BootEnable = true;  
   

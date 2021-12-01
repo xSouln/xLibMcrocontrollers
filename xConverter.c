@@ -93,18 +93,25 @@ uint8_t xConverterHex4(uint8_t byte)
 }
 //=================================================================================================================================
 //=================================================================================================================================
-uint32_t xConverterHexStrToUint(uint8_t *data, uint8_t len){
-  uint32_t x = 0;
+uint32_t xConverterHexStrToUInt(uint8_t *data, uint8_t len)
+{
+  uint32_t result = 0;
   uint8_t byte;
-  if(len >= 2 && data[0] == '0' && data[1] == 'x') { data += 2; len -= 2; }
-  for(uint8_t i = 0; i < len; i++){
+  
+  if(len >= 2 && data[0] == '0')
+  {
+    if(data[1] == 'x' || data[1] == 'X') { data += 2; len -= 2; }
+  }
+  
+  for(uint8_t i = 0; i < len; i++)
+  {
     byte = data[i];
     if (byte >= '0' && byte <= '9') { byte = byte - '0'; }
     else if (byte >= 'a' && byte <='f') { byte = byte - 'a' + 10; }
     else if (byte >= 'A' && byte <='F') { byte = byte - 'A' + 10; }
-    x = (x << 4) | (byte & 0xF);
+    result = (result << 4) | (byte & 0xF);
   }
-  return x;
+  return result;
 }
 //=================================================================================================================================
 uint16_t xConverterStrRemoveStr(uint8_t *ptr, uint16_t size, char* str2){

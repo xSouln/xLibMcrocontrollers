@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "xType.h"
-#include "xThread.h"
 //=================================================================================================================================
 #define xRX_SET_MASK_SIZE (size)(~(0xffff << size))
 enum RX_RESULT
@@ -46,6 +45,7 @@ typedef struct{
     volatile xRxStateT State;
     xRxCircleReceiverT CircleReceiver;
     xRxObjectReceiverT ObjectReceiver;
+    xObject Tx;
     xObject Context;
 }xRxT;
 //=================================================================================================================================
@@ -55,19 +55,28 @@ void xRxUpdate(xRxT* rx);
 void xRxClear(xRxT* rx);
 //=================================================================================================================================
 #define xRxCircleAdd(xRX, byte)\
-  xRX.CircleReceiver.Buffer[xRX.CircleReceiver.TotalIndex] = byte;\
-  xRX.CircleReceiver.TotalIndex++;\
-  xRX.CircleReceiver.TotalIndex &= xRX.CircleReceiver.SizeMask
+xRX.CircleReceiver.Buffer[xRX.CircleReceiver.TotalIndex] = byte;\
+xRX.CircleReceiver.TotalIndex++;\
+xRX.CircleReceiver.TotalIndex &= xRX.CircleReceiver.SizeMask
 //=================================================================================================================================
 #define RX_BUF_INIT(name)\
-  uint8_t name##_RX_CIRCLE_BUF[name##_RX_CIRCLE_BUF_SIZE_MASK + 1];\
-  uint8_t name##_RX_OBJECT_BUF[name##_RX_OBJECT_BUF_SIZE]
+uint8_t name##_RX_CIRCLE_BUF[name##_RX_CIRCLE_BUF_SIZE_MASK + 1];\
+uint8_t name##_RX_OBJECT_BUF[name##_RX_OBJECT_BUF_SIZE]
 //=================================================================================================================================
 #define RX_OBJECT_RECEIVER_INIT(name, callback)\
-  .ObjectReceiver = { .EventEndLine = callback, .Object = name##_RX_OBJECT_BUF, .Size = name##_RX_OBJECT_BUF_SIZE }
+.ObjectReceiver =\
+{\
+  .EventEndLine = (xRxEventEndLine)callback,\
+  .Object = name##_RX_OBJECT_BUF,\
+  .Size = name##_RX_OBJECT_BUF_SIZE\
+}
 //=================================================================================================================================
 #define RX_CIRCLE_RECEIVER_INIT(name)\
-  .CircleReceiver = { .Buffer = name##_RX_CIRCLE_BUF, .SizeMask = name##_RX_CIRCLE_BUF_SIZE_MASK }
+.CircleReceiver =\
+{\
+  .Buffer = name##_RX_CIRCLE_BUF,\
+  .SizeMask = name##_RX_CIRCLE_BUF_SIZE_MASK\
+}
 //=================================================================================================================================
 #define RX_INIT(name, size_mask_circle_buf, size_object_buf, event_end_line)\
 uint8_t name##_RX_CIRCLE_BUF[size_mask_circle_buf + 1];\

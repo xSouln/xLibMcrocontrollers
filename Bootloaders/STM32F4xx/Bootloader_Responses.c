@@ -38,19 +38,19 @@ void BootloaderResponse_REQUEST_DEFAULT(xTxT *tx, xTransactionT *request, xObjec
 //=================================================================================================================================
 const xTransactionT BootloaderRequests[] =
 {
-  NEW_TRANSACTION(BOOT_GET_INFO, BootloaderResponse_REQUEST_GET, 0, Bootloader.FirmwareInfo),
-  NEW_TRANSACTION(BOOT_GET_APP_INFO, BootloaderResponse_REQUEST_GET, 0, Bootloader.AppInfo),
-  NEW_TRANSACTION(BOOT_GET_FIRMWARE, BootloaderResponse_REQUEST_GET, 0, BOOT_FIRMWARE_VERSION),
-  NEW_TRANSACTION(BOOT_GET_STATUS, BootloaderResponse_REQUEST_GET, 0, xFlash.Status),
+  NEW_TRANSACTION0(BOOT_GET_INFO, BootloaderResponse_REQUEST_GET, 0, Bootloader.FirmwareInfo),
+  NEW_TRANSACTION0(BOOT_GET_APP_INFO, BootloaderResponse_REQUEST_GET, 0, Bootloader.AppInfo),
+  NEW_TRANSACTION0(BOOT_GET_FIRMWARE, BootloaderResponse_REQUEST_GET, 0, BOOT_FIRMWARE_VERSION),
+  NEW_TRANSACTION0(BOOT_GET_STATUS, BootloaderResponse_REQUEST_GET, 0, xFlash.Status),
   
-  NEW_TRANSACTION(BOOT_SET_FLASH_LOCK_STATE, BootloaderResponse_REQUEST_DEFAULT, ActionSetLockState, xFlash.Status),
+  NEW_TRANSACTION0(BOOT_SET_FLASH_LOCK_STATE, BootloaderResponse_REQUEST_DEFAULT, ActionSetLockState, xFlash.Status),
   
-  NEW_TRANSACTION(BOOT_TRY_WRITE, BootloaderResponse_REQUEST_DEFAULT, ActionTryWrite, xFlash.Status),
-  NEW_TRANSACTION(BOOT_TRY_ERASE, BootloaderResponse_REQUEST_DEFAULT, ActionTryErase, xFlash.Status),
-  NEW_TRANSACTION(BOOT_TRY_JUMP_TO_MAIN, BootloaderResponse_REQUEST_DEFAULT, ActionTryJumpToMain, Bootloader.AppInfo),
-  NEW_TRANSACTION(BOOT_TRY_JUMP_TO_BOOT, BootloaderResponse_REQUEST_DEFAULT, ActionTryJumpToBoot, Bootloader.AppInfo),
-  NEW_TRANSACTION(BOOT_TRY_RESET, BootloaderResponse_REQUEST_DEFAULT, ActionTryReset, Bootloader.AppInfo),
-  NEW_TRANSACTION(BOOT_TRY_UPDATE_INFO, BootloaderResponse_REQUEST_DEFAULT, ActionTryUpdateInfo, Bootloader.FirmwareInfo),
+  NEW_TRANSACTION0(BOOT_TRY_WRITE, BootloaderResponse_REQUEST_DEFAULT, ActionTryWrite, xFlash.Status),
+  NEW_TRANSACTION0(BOOT_TRY_ERASE, BootloaderResponse_REQUEST_DEFAULT, ActionTryErase, xFlash.Status),
+  NEW_TRANSACTION0(BOOT_TRY_JUMP_TO_MAIN, BootloaderResponse_REQUEST_DEFAULT, ActionTryJumpToMain, Bootloader.AppInfo),
+  NEW_TRANSACTION0(BOOT_TRY_JUMP_TO_BOOT, BootloaderResponse_REQUEST_DEFAULT, ActionTryJumpToBoot, Bootloader.AppInfo),
+  NEW_TRANSACTION0(BOOT_TRY_RESET, BootloaderResponse_REQUEST_DEFAULT, ActionTryReset, Bootloader.AppInfo),
+  NEW_TRANSACTION0(BOOT_TRY_UPDATE_INFO, BootloaderResponse_REQUEST_DEFAULT, ActionTryUpdateInfo, Bootloader.FirmwareInfo),
   //NEW_TRANSACTION(TRY_READ_CRC, Response_REQUEST_DEFAULT, ActionReadInfo, Bootloader.Info),
   { .Id = -1 }
 };

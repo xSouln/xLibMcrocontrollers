@@ -117,15 +117,15 @@ typedef struct BootloaderT
 //==============================================================================
 extern BootloaderT Bootloader;
 //==============================================================================
-int16_t ActionTryWrite(xObject context, RequestWriteT* request, uint16_t object_size);
-int16_t ActionTryErase(xObject context, RequestEraseT* request, uint16_t object_size);
-int16_t ActionTryJumpToMain(xObject context);
-int16_t ActionTryJumpToBoot(xObject context);
-int16_t ActionTryReset(xObject context);
-int16_t ActionTryUpdateInfo(xObject context);
-int16_t ActionTryReset(xObject context);
+int16_t ActionTryWrite(xRxT* rx, xObject context, RequestWriteT* request, uint16_t object_size);
+int16_t ActionTryErase(xRxT* rx, xObject context, RequestEraseT* request, uint16_t object_size);
+int16_t ActionTryJumpToMain(xRxT* rx, xObject context);
+int16_t ActionTryJumpToBoot(xRxT* rx, xObject context);
+int16_t ActionTryReset(xRxT* rx, xObject context);
+int16_t ActionTryUpdateInfo(xRxT* rx, xObject context);
+int16_t ActionTryReset(xRxT* rx, xObject context);
 
-int16_t ActionSetLockState(xObject context, uint8_t* request);
+int16_t ActionSetLockState(xRxT* rx, xObject context, uint8_t* request);
 
 int16_t BootloaderSetFirmwareInfo(FirmwareInfoT* info);
 //==============================================================================

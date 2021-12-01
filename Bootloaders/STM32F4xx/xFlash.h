@@ -7,6 +7,9 @@
 #include "xType.h"
 #include "Bootloader_Types.h"
 //==============================================================================
+#define XFLASH_LOCK true
+#define XFLASH_UNLOCK (XFLASH_LOCK ^ true)
+//==============================================================================
 static uint32_t FLASH_PAGES[] =
 {
   0x08000000,
@@ -68,10 +71,12 @@ typedef struct
 extern xFlashT xFlash;
 //==============================================================================
 int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t timeout);
-int8_t xFlashWrite(uint32_t address, xObject data, uint16_t len, uint32_t timeout);
-int8_t xFlashRead(uint32_t address, volatile uint8_t* data, uint16_t len);
 int8_t xFlashSetLock(bool state);
 uint16_t xFlashGetCrc(uint32_t start_address, uint32_t end_address);
-//==============================================================================
+
+int8_t xFlashWrite(uint32_t address, xObject data, uint16_t len, uint32_t timeout);
+int8_t xFlashRead(uint32_t address, volatile xObject data, uint16_t len);
+
+int8_t xFlashSaveObject(uint32_t address, xObject object, uint16_t size, uint32_t timeout);
 //==============================================================================
 #endif

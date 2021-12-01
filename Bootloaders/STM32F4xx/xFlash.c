@@ -131,14 +131,15 @@ int8_t xFlashWrite(uint32_t address, xObject data, uint16_t len, uint32_t timeou
   return xFlash.Status.OperationResult;
 }
 //==============================================================================
-int8_t xFlashRead(uint32_t address, volatile uint8_t* data, uint16_t len)
+int8_t xFlashRead(uint32_t address, volatile xObject data, uint16_t len)
 {
-  volatile uint8_t* ptr = (volatile uint8_t*)address;
+  volatile uint8_t* mem = (volatile uint8_t*)address;
+  volatile uint8_t* out = (volatile uint8_t*)data;
   uint16_t i = 0;
   xFlash.Status.Read = true;
   while(i < len && address < APP_END_ADDRESS)
   {
-    data[i] = ptr[i];
+    out[i] = mem[i];
     address++;
     i++;
   }
@@ -161,12 +162,12 @@ uint16_t xFlashGetCrc(uint32_t start_address, uint32_t end_address)
 //==============================================================================
 int8_t xFlashSetLock(bool state)
 {
-  xFlash.Status.FlashUnlocked = !state;
+  xFlash.Status.FlashUnlocked = state == XFLASH_UNLOCK;
   xFlash.Status.Operation = FlashOperationLock;
   xFlash.Status.OperationTime = 0;
   xFlash.Status.OperationResult = BOOT_ACCEPT;
   
-  if(state)
+  if(state == XFLASH_LOCK)
   {
     SET_BIT(FLASH->CR, FLASH_CR_LOCK);
   }
@@ -177,6 +178,22 @@ int8_t xFlashSetLock(bool state)
   }
   
   return xFlash.Status.OperationResult;
+}
+//==============================================================================
+int8_t xFlashSaveObject(uint32_t address, xObject object, uint16_t size, uint32_t timeout)
+{
+  int8_t result = xFlashSetLock(XFLASH_UNLOCK);
+  if(result != BOOT_ACCEPT) { goto end; }
+  
+  result = xFlashErasePages(address, address + 1, timeout);
+  if(result != BOOT_ACCEPT) { goto end; }
+  
+  result = xFlashWrite(address, object, size, timeout);
+  if(result != BOOT_ACCEPT) { goto end; }
+  
+  end:;
+  xFlashSetLock(XFLASH_LOCK);
+  return result;
 }
 //==============================================================================
 xFlashT xFlash;
