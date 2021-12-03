@@ -35,7 +35,8 @@ inline void xTimerDecrement(xTimerT* timer)
   xListElementT* element = timer->Tasks.Head;
   //timer->Handler.Decrement = true;
   
-  while(element){
+  while(element)
+  {
     xTimerTaskT* task = element->Value;    
     if(task->Retention && task->State.Enable){ task->Retention--; }
     element = element->Next;

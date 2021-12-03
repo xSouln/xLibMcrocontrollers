@@ -14,8 +14,9 @@ void xRxUpdate(xObject context, xRxT* rx)
 
     if(rx->ObjectReceiver.BytesCount >= rx->ObjectReceiver.Size)
     {
-      xRequestBaseT action =
+      xEventBaseT action =
       {
+        .Attachment = context,
         .Initiator = rx,
         .Context = context,
       };
@@ -25,8 +26,9 @@ void xRxUpdate(xObject context, xRxT* rx)
     }
     else if(rx->CircleReceiver.Buffer[rx->CircleReceiver.HandlerIndex] == '\r')
     {
-      xRequestBaseT action =
+      xEventBaseT action =
       {
+        .Attachment = context,
         .Initiator = rx,
         .Context = context,
       };
@@ -51,8 +53,9 @@ void xRxAdd(xObject context, xRxT* rx, uint8_t *data, uint16_t data_size)
     
     if(rx->ObjectReceiver.BytesCount >= rx->ObjectReceiver.Size)
     {
-      xRequestBaseT action =
+      xEventBaseT action =
       {
+        .Attachment = context,
         .Initiator = rx,
         .Context = context,
       };
@@ -62,8 +65,9 @@ void xRxAdd(xObject context, xRxT* rx, uint8_t *data, uint16_t data_size)
     }    
     else if(data[i] == '\r')
     {
-      xRequestBaseT action =
+      xEventBaseT action =
       {
+        .Attachment = context,
         .Initiator = rx,
         .Context = context,
       };

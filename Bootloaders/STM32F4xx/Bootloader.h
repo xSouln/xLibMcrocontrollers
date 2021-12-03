@@ -5,14 +5,14 @@
  *      Author: rekuts
  */
 
-#ifndef BOOTLOADER_STM32_H_
-#define BOOTLOADER_STM32_H_
+#ifndef _BOOTLOADER_STM32_H_
+#define _BOOTLOADER_STM32_H_
 //==============================================================================
 #include "xType.h"
 #include "xPort.h"
 #include "xFlash.h"
 #include "Bootloader_Types.h"
-#include "Bootloader_Responses.h"
+#include "Bootloader_Requests.h"
 //==============================================================================
 enum ERRORS_BOOT
 {

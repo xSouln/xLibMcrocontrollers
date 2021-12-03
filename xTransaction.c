@@ -1,8 +1,8 @@
-//=================================================================================================================================
+//==============================================================================
 #include <string.h>
 #include "xTransaction.h"
-//=================================================================================================================================
-xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t data[], uint16_t len)
+//==============================================================================
+xCommandT* xCommandIdentify(xObject context, xCommandT commands[], uint8_t data[], uint16_t len)
 {
   uint8_t i = 0;
   while(commands[i].Header)
@@ -11,7 +11,7 @@ xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t d
     {
       if(memcmp(data, commands[i].Header, commands[i].HeaderLength) == 0)
       {
-        ((xRequestBaseT*)context)->Context = &commands[i];
+        ((xEventBaseT*)context)->Context = &commands[i];
         switch(commands[i].Mode)
         {
           case TRANSACTION_MODE_OBJECT:
@@ -27,13 +27,18 @@ xCommandT* xTransactionIdentify(xObject context, xCommandT commands[], uint8_t d
   }
   return 0;
 }
-//=================================================================================================================================
-int8_t xHeaderIdentify(xObject context, xObject header, uint8_t header_length, volatile uint8_t *data, uint16_t len){    
-  if(header_length >= len)
+//==============================================================================
+xTransactionT* xTransactionIdentify(xObject context, xTransactionT* transaction, uint16_t key)
+{
+  while(transaction && transaction->Id != (uint16_t)-1)
   {
-    return memcmp(header, (uint8_t*)data, header_length) == 0;
+    if(transaction->Id == key)
+    {
+      return transaction;
+    }
+    transaction++;
   }
-  return -1;
+  
+  return 0;
 }
-//=================================================================================================================================
-
+//==============================================================================

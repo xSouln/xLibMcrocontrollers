@@ -56,7 +56,7 @@ typedef struct{ uint16_t Key; uint16_t Size; } ResponseInfoT;
 typedef struct{ ResponseHeaderT Header; ResponseInfoT Info; } ResponseT;
 	
 typedef struct{ uint16_t Action; uint16_t Error; } ErrorResponseT;
-	
+//==============================================================================
 #define REQUEST_START_CHARACTER '#'
 #define REQUEST_END_CHARACTER ':'
 #define RESPONSE_START_CHARACTER '#'
@@ -78,27 +78,36 @@ static char RESPONSE_HEADER[] = "#RES::";
 static char RESPONSE_ACCEPT[] = "#ACC::";
 static char RESPONSE_HEADER_NOTE[] = "#NOTE:";
 static char RESPONSE_END[] = "\r";
-
+//==============================================================================
 #define RESPONSE_END_SIZE (sizeof(RESPONSE_END) / sizeof(RESPONSE_END[0]) - 1)
 #define sizeof_str(str)(sizeof(str) / sizeof(str[0]) - 1)
 #define sizeof_array(array)(sizeof(array) / sizeof(array[0]))
 //==============================================================================
-#define REQUEST_TYPEDEF(Name, TParent, TInitiator, TContext)\
+#define OBJECT_DESCRIPTION\
+  char* Description
+
+#define OBJECT_ATTACHMENT(TAttachment)\
+  OBJECT_DESCRIPTION;\
+  TAttachment Attachment
+    
+#define OBJECT_ATTACHMENT_PATTERN(TAttachment)\
+  OBJECT_DESCRIPTION;\
+  TAttachment
+//==============================================================================
+#define EVENT_TYPEDEF(Name, TAttachment, TInitiator, TContext)\
 typedef struct{\
-  char* Attachment;\
-  TParent Parent;\
+  OBJECT_ATTACHMENT(TAttachment);\
   TInitiator Initiator;\
   TContext Context;\
-}xRequest##Name##T
+}xEvent##Name##T
 
-#define REQUEST_PATTERN(Name, TParent, TInitiator, TContext)\
+#define EVENT_PATTERN(Name, TAttachment, TInitiator, TContext)\
 typedef struct{\
-  char* Attachment;\
-  TParent;\
+  OBJECT_ATTACHMENT_PATTERN(TAttachment);\
   TInitiator;\
   TContext;\
-}xRequest##Name##T
+}xEvent##Name##T
 //==============================================================================
-REQUEST_TYPEDEF(Base, xObject, xObject, xObject);
+EVENT_TYPEDEF(Base, xObject, xObject, xObject);
 //==============================================================================
 #endif /* XTYPE_H_ */

@@ -36,12 +36,15 @@ typedef union{
 }xTxHandlerT;
 //==============================================================================
 typedef struct{
+  OBJECT_ATTACHMENT(xObject);
+  
+  uint8_t* Buffer;
   volatile xTxHandlerT Handler;
   xTxStateT State;
-  TransmitActionT TransmitAction;
-  xObject Rx;
-  uint8_t* Buffer;
   uint16_t Crc;
+  TransmitActionT TransmitAction;
+  
+  xObject Rx;
 }xTxT;
 //==============================================================================
 void xTxAdd(xTxT *Tx, xObject obj, uint16_t obj_size);

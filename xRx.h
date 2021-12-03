@@ -6,6 +6,12 @@
 #include <stdbool.h>
 #include "xType.h"
 //==============================================================================
+#define XRX_CIRCLE_BASE\
+  uint8_t *Buffer;\
+  uint16_t TotalIndex;\
+  uint16_t HandlerIndex;\
+  uint16_t SizeMask
+//==============================================================================
 #define xRX_SET_MASK_SIZE (size)(~(0xffff << size))
 enum RX_RESULT
 {
@@ -27,11 +33,12 @@ typedef struct{
 }xRxStateT;
 //==============================================================================
 typedef struct{
-  uint16_t TotalIndex;
-  uint16_t HandlerIndex;
-  uint16_t SizeMask;
+  XRX_CIRCLE_BASE;
+}xRxCircleBaseT;
+//==============================================================================
+typedef struct{
+  XRX_CIRCLE_BASE;
   volatile uint16_t ReceiveDelay;
-  uint8_t *Buffer;
 }xRxCircleReceiverT;
 //==============================================================================
 typedef struct{
@@ -42,11 +49,13 @@ typedef struct{
 }xRxObjectReceiverT;
 //==============================================================================
 typedef struct{
-    volatile xRxStateT State;
-    xRxCircleReceiverT CircleReceiver;
-    xRxObjectReceiverT ObjectReceiver;
-    xObject Tx;
-    xObject Context;
+  OBJECT_ATTACHMENT(xObject);
+  
+  volatile xRxStateT State;
+  xRxCircleReceiverT CircleReceiver;
+  xRxObjectReceiverT ObjectReceiver;
+  
+  xObject Tx;
 }xRxT;
 //==============================================================================
 //void xRxCircleAdd(xRxT* xRX, uint8_t Byte);

@@ -30,5 +30,16 @@ inline static int COPY_OBJECTS(uint8_t* memory, ...)
   return size;
 }
 */
+
+//==============================================================================
+#define VA_ARGS_SHIFT(P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,PN,...) PN
+#define VA_ARGS_COUNT(...) VA_ARGS_SHIFT(-1,##__VA_ARGS__,9,8,7,6,5,4,3,2,1,0)
+
+//#define CONTENT_PUT(arg_obj, arg_size) {   }
+#define xRequestDef(name, size1, ...) \
+xContent RequestContent_##name[VA_ARGS_COUNT(__VA_ARGS__)] = { { .obj = &#__VA_ARGS__, .size = sizeof(#__VA_ARGS__) } }; \
+xObject RequestObjects_##name[VA_ARGS_COUNT(__VA_ARGS__)] = { &#__VA_ARGS__ }; \
+uint8_t RequestObjectSize_##name[VA_ARGS_COUNT(__VA_ARGS__)] = { sizeof(#__VA_ARGS__) }; \
+xRequestT Request_##name = { .Content = { 0 }, .Contents = RequestContent_##name }
 //=================================================================================================================================
 #endif /* XTYPE_H_ */
