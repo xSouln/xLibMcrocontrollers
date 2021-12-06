@@ -16,9 +16,8 @@ void xRxUpdate(xObject context, xRxT* rx)
     {
       xEventBaseT action =
       {
-        .Attachment = context,
-        .Initiator = rx,
-        .Context = context,
+        .Attachment = rx,
+        .Holder = context
       };
       
       rx->ObjectReceiver.EventEndLine(&action, rx->ObjectReceiver.Object, rx->ObjectReceiver.BytesCount);
@@ -29,8 +28,7 @@ void xRxUpdate(xObject context, xRxT* rx)
       xEventBaseT action =
       {
         .Attachment = context,
-        .Initiator = rx,
-        .Context = context,
+        .Holder = context
       };
       
       if(rx->ObjectReceiver.EventEndLine(&action, rx->ObjectReceiver.Object, rx->ObjectReceiver.BytesCount - 1))
@@ -56,8 +54,7 @@ void xRxAdd(xObject context, xRxT* rx, uint8_t *data, uint16_t data_size)
       xEventBaseT action =
       {
         .Attachment = context,
-        .Initiator = rx,
-        .Context = context,
+        .Holder = context
       };
       
       rx->ObjectReceiver.EventEndLine(&action, rx->ObjectReceiver.Object, rx->ObjectReceiver.BytesCount);
@@ -68,8 +65,7 @@ void xRxAdd(xObject context, xRxT* rx, uint8_t *data, uint16_t data_size)
       xEventBaseT action =
       {
         .Attachment = context,
-        .Initiator = rx,
-        .Context = context,
+        .Holder = context
       };
       
       if(rx->ObjectReceiver.EventEndLine(&action, rx->ObjectReceiver.Object, rx->ObjectReceiver.BytesCount - 1))

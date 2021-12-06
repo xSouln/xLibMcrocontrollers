@@ -84,27 +84,27 @@ static char RESPONSE_END[] = "\r";
 #define sizeof_array(array)(sizeof(array) / sizeof(array[0]))
 //==============================================================================
 #define OBJECT_DESCRIPTION\
-  char* Description
+  const char* Description
 
 #define OBJECT_ATTACHMENT(TAttachment)\
   OBJECT_DESCRIPTION;\
-  TAttachment Attachment
+  const TAttachment Attachment
     
 #define OBJECT_ATTACHMENT_PATTERN(TAttachment)\
   OBJECT_DESCRIPTION;\
-  TAttachment
+  const TAttachment
 //==============================================================================
-#define EVENT_TYPEDEF(Name, TAttachment, TInitiator, TContext)\
+#define EVENT_TYPEDEF(Name, TAttachment, THolder, TContext)\
 typedef struct{\
   OBJECT_ATTACHMENT(TAttachment);\
-  TInitiator Initiator;\
+  const THolder Holder;\
   TContext Context;\
 }xEvent##Name##T
 
-#define EVENT_PATTERN(Name, TAttachment, TInitiator, TContext)\
+#define EVENT_PATTERN(Name, TAttachment, THolder, TContext)\
 typedef struct{\
   OBJECT_ATTACHMENT_PATTERN(TAttachment);\
-  TInitiator;\
+  const THolder;\
   TContext;\
 }xEvent##Name##T
 //==============================================================================

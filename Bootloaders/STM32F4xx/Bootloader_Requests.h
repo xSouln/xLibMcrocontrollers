@@ -50,6 +50,9 @@ enum BOOT_REQUESTS
 //==============================================================================
 static char BOOT_REQUEST_HEADER[] = "#RQBL:";
 static char BOOT_RESPONSE_HEADER[] = "#RSBL:";
+
+static char BOOT_REQUEST_END[] = "\r";
+static char BOOT_RESPONSE_END[] = "\r";
 //==============================================================================
 extern const xTransactionT Bootloader_Requests[];
 
