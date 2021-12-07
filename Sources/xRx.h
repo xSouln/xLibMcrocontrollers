@@ -12,18 +12,18 @@
   uint16_t HandlerIndex;\
   uint16_t SizeMask
 //==============================================================================
-#define xRX_SET_MASK_SIZE (size)(~(0xffff << size))
 enum RX_RESULT
 {
   RX_STORAGE,
-  RX_RESET,
+  RX_RESET
 };
 //==============================================================================
 typedef struct { uint16_t size; uint8_t* ptr; } xRxObjectT;
 //==============================================================================
 typedef int (*xRxEventEndLine)(xObject action, uint8_t* object, uint16_t size);
 //==============================================================================
-typedef struct{
+typedef struct
+{
   uint16_t Storage : 1;
   uint16_t BufLoaded : 1;
   uint16_t ReceiveComlite : 1;
@@ -32,23 +32,27 @@ typedef struct{
   uint16_t CrcEnable : 1;
 }xRxStateT;
 //==============================================================================
-typedef struct{
+typedef struct
+{
   XRX_CIRCLE_BASE;
 }xRxCircleBaseT;
 //==============================================================================
-typedef struct{
+typedef struct
+{
   XRX_CIRCLE_BASE;
   volatile uint16_t ReceiveDelay;
 }xRxCircleReceiverT;
 //==============================================================================
-typedef struct{
+typedef struct
+{
   uint8_t* Object;
   uint16_t Size;
   uint16_t BytesCount;
   xRxEventEndLine EventEndLine;
 }xRxObjectReceiverT;
 //==============================================================================
-typedef struct{
+typedef struct
+{
   OBJECT_ATTACHMENT(xObject);
   
   volatile xRxStateT State;
@@ -91,6 +95,7 @@ uint8_t name##_RX_OBJECT_BUF[name##_RX_OBJECT_BUF_SIZE]
 uint8_t name##_RX_CIRCLE_BUF[size_mask_circle_buf + 1];\
 uint8_t name##_RX_OBJECT_BUF[size_object_buf];\
 xRxT name##_RX = {\
+  .Description = "xRxT",\
   .CircleReceiver = { .Buffer = name##_RX_CIRCLE_BUF, .SizeMask = size_mask_circle_buf },\
   .ObjectReceiver = { .EventEndLine = event_end_line, .Object = name##_RX_OBJECT_BUF, .Size = size_object_buf }\
 }

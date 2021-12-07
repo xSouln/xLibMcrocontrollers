@@ -7,12 +7,11 @@
 //==============================================================================
 #include <string.h>
 #include <stdlib.h>
+#include "stm32f4xx_hal.h"
 #include "Bootloader.h"
 #include "xTransaction.h"
-//#include "stm32f1xx_hal_flash_ex.h"
-extern void AppMain();
 //==============================================================================
-int16_t ActionTryWrite(xRxT* rx, xObject context, RequestWriteT* request, uint16_t object_size)
+int16_t Bootloader_TryWrite(xObject context, RequestWriteT* request, uint16_t object_size)
 {
   if(!request){ return BOOT_ERROR_REQUEST; }
   if(request->StartAddress < BOOT_END_ADDRESS){ return BOOT_OUTSIDE; }
@@ -25,12 +24,12 @@ int16_t ActionTryWrite(xRxT* rx, xObject context, RequestWriteT* request, uint16
   return xFlashWrite(request->StartAddress, data, request->DataSize, 100);
 }
 //==============================================================================
-int16_t ActionTryRead(xObject context, RequestReadT* request, uint16_t object_size)
+int16_t Bootloader_TryRead(xObject context, RequestReadT* request, uint16_t object_size)
 {  
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryErase(xRxT* rx, xObject context, RequestEraseT* request, uint16_t object_size)
+int16_t Bootloader_TryErase(xObject context, RequestEraseT* request, uint16_t object_size)
 {
   if(!request){ return BOOT_ERROR_REQUEST; }
   if(request->StartAddress < BOOT_END_ADDRESS){ return BOOT_OUTSIDE; }
@@ -38,14 +37,14 @@ int16_t ActionTryErase(xRxT* rx, xObject context, RequestEraseT* request, uint16
   return xFlashErasePages(request->StartAddress, request->EndAddress, 2000);
 }
 //==============================================================================
-int16_t ActionSetLockState(xRxT* rx, xObject context, uint8_t* request)
+int16_t Bootloader_SetLockState(xObject context, uint8_t* request)
 {
   if(!request){ return BOOT_ERROR_REQUEST; }
   
   return xFlashSetLock(*request > 0);
 }
 //==============================================================================
-int16_t ActionTryJumpToMain(xRxT* rx, xObject context)
+int16_t Bootloader_TryJumpToMain(xObject context)
 {
   if(!Bootloader.AppInfo.Status.BootIsEnable){ return BOOT_ERROR_RESOLUTION; }  
   Bootloader.AppInfo.Status.JumpToMain = true;
@@ -53,7 +52,7 @@ int16_t ActionTryJumpToMain(xRxT* rx, xObject context)
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryUpdateInfo(xRxT* rx, xObject context)
+int16_t Bootloader_TryUpdateInfo(xObject context)
 {
   xFlashRead(BOOT_END_ADDRESS, &Bootloader.FirmwareInfo, sizeof(Bootloader.FirmwareInfo));
   
@@ -70,7 +69,7 @@ int16_t ActionTryUpdateInfo(xRxT* rx, xObject context)
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionReadCrc(xObject context, RequestEraseT* request, uint16_t object_size)
+int16_t Bootloader_ReadCrc(xObject context, RequestEraseT* request, uint16_t object_size)
 {
   if(request->StartAddress > APP_END_ADDRESS){ return BOOT_OUTSIDE; }
   if(request->StartAddress > request->EndAddress){ return BOOT_ERROR_ACTION; }
@@ -80,13 +79,13 @@ int16_t ActionReadCrc(xObject context, RequestEraseT* request, uint16_t object_s
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryReset(xRxT* rx, xObject context)
+int16_t Bootloader_TryReset(xObject context)
 {
   Bootloader.AppInfo.Status.Reset = true;
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t ActionTryJumpToBoot(xRxT* rx, xObject context)
+int16_t Bootloader_TryJumpToBoot(xObject context)
 {
   if(Bootloader.AppInfo.Status.BootIsEnable){ return BOOT_ERROR_RESOLUTION; }
   Bootloader.AppInfo.Status.JumpToBoot = true;
@@ -104,7 +103,7 @@ int16_t ActionTryJumpToBoot(xRxT* rx, xObject context)
   return BOOT_ACCEPT;
 }
 //==============================================================================
-int16_t BootloaderSetFirmwareInfo(FirmwareInfoT* info)
+int16_t Bootloader_SetFirmwareInfo(FirmwareInfoT* info)
 {
   if(!Bootloader.AppInfo.Status.BootIsEnable){ return BOOT_ERROR_RESOLUTION; }
   
@@ -114,6 +113,42 @@ int16_t BootloaderSetFirmwareInfo(FirmwareInfoT* info)
   xFlashSetLock(true);
   
   return BOOT_ACCEPT;
+}
+//==============================================================================
+inline void Bootloader_MoveVector(uint32_t address)
+{
+  __set_PRIMASK(1);
+  SCB->VTOR = (address);
+  __set_PRIMASK(0);
+}
+//==============================================================================
+inline void Bootloader_AppMainStart(uint32_t address)
+{
+  uint32_t app_jump_address = *(uint32_t*)(address + 4);  
+  AppFuncT app_main = (AppFuncT)app_jump_address;
+  
+  __disable_irq();
+  HAL_DeInit();
+  
+  __set_MSP(*(volatile uint32_t*)address);
+  app_main();
+  
+  NVIC_SystemReset();
+}
+//==============================================================================
+inline void Bootloader_Handler()
+{
+  if(Bootloader.AppInfo.Status.Reset)
+  {
+    Bootloader.AppInfo.Status.Reset = false;
+    NVIC_SystemReset();
+  }
+  
+  if(Bootloader.AppInfo.Status.JumpToBoot)
+  {
+    Bootloader.AppInfo.Status.JumpToBoot = false;
+    NVIC_SystemReset();
+  }
 }
 //==============================================================================
 BootloaderT Bootloader =

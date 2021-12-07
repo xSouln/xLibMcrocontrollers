@@ -4,10 +4,10 @@
  * Created: 16.05.2019 14:29:38
  *  Author: rekuts
  */ 
-//=================================================================================================================================
+//==============================================================================
 #ifndef PATTERN_STM32X4XX_SPI_H_
 #define PATTERN_STM32X4XX_SPI_H_
-//=================================================================================================================================
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t ClockPhase: 1; //SPI_CR1_CPHA    
@@ -30,7 +30,7 @@ typedef union{
   };
   uint32_t Value;
 }SpiCR1_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t RxEnableDMA: 1; //SPI_CR2_RXDMAEN    
@@ -45,7 +45,7 @@ typedef union{
   };
   uint32_t Value;
 }SpiCR2_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t RxNotEmpty: 1; //SPI_SR_RXNE    
@@ -62,28 +62,28 @@ typedef union{
   };
   uint32_t Value;
 }SpiSR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t CrcPolynomial: 16; //SPI_CRCPR_CRCPOLY 
   };
   uint32_t Value;
 }SpiCRCPR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t RxCrc: 16; //SPI_RXCRCR_RXCRC 
   };
   uint32_t Value;
 }SpiRXCRCR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t TxCrc: 16; //SPI_TXCRCR_TXCRC 
   };
   uint32_t Value;
 }SpiTXCRCR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t ChannelLength: 1; //SPI_I2SCFGR_CHLEN    
@@ -101,7 +101,7 @@ typedef union{
   };
   uint32_t Value;
 }SpiI2SCFGR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t LinearPrescaler: 8; //SPI_I2SPR_I2SDIV
@@ -111,7 +111,7 @@ typedef union{
   };
   uint32_t Value;
 }SpiI2SPR_T;
-
+//==============================================================================
 typedef struct{
   volatile SpiCR1_T CR1; //SPI control register 1
   volatile SpiCR2_T CR2; //SPI control register 2
@@ -123,5 +123,5 @@ typedef struct{
   volatile SpiI2SCFGR_T I2SCFGR; //SPI_I2S configuration register
   volatile SpiI2SPR_T I2SPR; //SPI_I2S prescaler register
 }SpiRegT;
-//=================================================================================================================================
+//==============================================================================
 #endif /* PATTERN_STM32X4XX_SPI_H_ */

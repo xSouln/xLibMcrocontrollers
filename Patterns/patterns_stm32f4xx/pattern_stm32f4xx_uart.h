@@ -8,8 +8,6 @@
 #ifndef PATTERN_STM32X4XX_UART_H_
 #define PATTERN_STM32X4XX_UART_H_
 //==============================================================================
-
-//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t SendBreak: 1; //USART_CR1_SBK    
@@ -33,7 +31,7 @@ typedef union{
   };
   uint32_t Value;
 }UsartCR1_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t AddressNode: 5; //USART_CR2_ADD
@@ -52,7 +50,7 @@ typedef union{
   };
   uint32_t Value;
 }UsartCR2_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t ErrorInterruptEnable: 1; //USART_CR3_EIE    
@@ -72,7 +70,7 @@ typedef union{
   };
   uint32_t Value;
 }UsartCR3_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t Prescaler: 8; //USART_GTPR_PSC
@@ -81,7 +79,7 @@ typedef union{
   };
   uint32_t Value;
 }UsartGTPR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t FractionUSARTDIV: 4; //USART_BRR_DIV_Fraction
@@ -90,7 +88,7 @@ typedef union{
   };
   uint32_t Value;
 }UsartBRR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t ErrorParity: 1; //USART_SR_PE
@@ -108,7 +106,7 @@ typedef union{
   };
   uint32_t Value;
 }UsartSR_T;
-
+//==============================================================================
 typedef struct{
   volatile UsartSR_T SR; //USART Status register
   volatile uint32_t DR; //USART Data register
@@ -117,6 +115,6 @@ typedef struct{
   volatile UsartCR2_T CR2; //USART Control register 2
   volatile UsartCR3_T CR3; //USART Control register 3
   volatile UsartGTPR_T GTPR; //SART Guard time and prescaler register
-}UsartReg_T; // For stm32
+}UsartRegT; // For stm32
 //==============================================================================
 #endif /* PATTERN_STM32X4XX_UART_H_ */

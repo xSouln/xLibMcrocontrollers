@@ -117,16 +117,20 @@ typedef struct BootloaderT
 //==============================================================================
 extern BootloaderT Bootloader;
 //==============================================================================
-int16_t ActionTryWrite(xRxT* rx, xObject context, RequestWriteT* request, uint16_t object_size);
-int16_t ActionTryErase(xRxT* rx, xObject context, RequestEraseT* request, uint16_t object_size);
-int16_t ActionTryJumpToMain(xRxT* rx, xObject context);
-int16_t ActionTryJumpToBoot(xRxT* rx, xObject context);
-int16_t ActionTryReset(xRxT* rx, xObject context);
-int16_t ActionTryUpdateInfo(xRxT* rx, xObject context);
-int16_t ActionTryReset(xRxT* rx, xObject context);
+int16_t Bootloader_TryWrite(xObject context, RequestWriteT* request, uint16_t object_size);
+int16_t Bootloader_TryErase(xObject context, RequestEraseT* request, uint16_t object_size);
+int16_t Bootloader_TryJumpToMain(xObject context);
+int16_t Bootloader_TryJumpToBoot(xObject context);
+int16_t Bootloader_TryReset(xObject context);
+int16_t Bootloader_TryUpdateInfo(xObject context);
+int16_t Bootloader_TryReset(xObject context);
 
-int16_t ActionSetLockState(xRxT* rx, xObject context, uint8_t* request);
+int16_t Bootloader_SetLockState(xObject context, uint8_t* request);
 
-int16_t BootloaderSetFirmwareInfo(FirmwareInfoT* info);
+int16_t Bootloader_SetFirmwareInfo(FirmwareInfoT* info);
+
+extern inline void Bootloader_Handler();
+extern inline void Bootloader_MoveVector(uint32_t address);
+extern inline void Bootloader_AppMainStart(uint32_t address);
 //==============================================================================
 #endif /* BOOTLOADER_STM32_H_ */

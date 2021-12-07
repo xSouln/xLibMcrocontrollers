@@ -13,8 +13,9 @@
 //==============================================================================
 #ifdef pattern_stm32f4xx
 
-#include "pattern_stm32f4xx_uart.h"
-#include "pattern_stm32f4xx_spi.h"
+#include "patterns_stm32f4xx/pattern_stm32f4xx_uart.h"
+#include "patterns_stm32f4xx/pattern_stm32f4xx_timer.h"
+#include "patterns_stm32f4xx/pattern_stm32f4xx_spi.h"
 
 #endif
 //==============================================================================
@@ -108,6 +109,9 @@ typedef struct{\
   TContext;\
 }xEvent##Name##T
 //==============================================================================
-EVENT_TYPEDEF(Base, xObject, xObject, xObject);
+EVENT_TYPEDEF(Base,
+              xObject,
+              xObject,
+              xObject);
 //==============================================================================
 #endif /* XTYPE_H_ */

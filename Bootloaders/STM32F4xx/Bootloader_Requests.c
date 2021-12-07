@@ -12,13 +12,13 @@
 #include "xFlash.h"
 //==============================================================================
 EVENT_PATTERN(Response,
-               xObject* Parent,
                xRxT* Rx,
+               xObject* Holder,
                xTransactionT* Transaction);
                
 EVENT_PATTERN(Command,
-               xObject* Parent,
                xRxT* Rx,
+               xObject* Holder,
                xCommandT* Command);
 //==============================================================================
 void Bootloader_RESPONSE_GET(xEventResponseT* event, xObject obj, uint16_t size, int16_t error)
@@ -68,7 +68,7 @@ void Bootloader_RequestAction(xEventBaseT* event, uint8_t* object, uint16_t size
     {
       xTxAdd(((xEventCommandT*)event)->Rx->Tx, BOOT_RESPONSE_HEADER, sizeof_str(BOOT_RESPONSE_HEADER));
       transaction->Response(event, object, size, action_error);
-      xTxAdd(((xEventCommandT*)event)->Rx->Tx, RESPONSE_END, sizeof_str(RESPONSE_END));
+      xTxAdd(((xEventCommandT*)event)->Rx->Tx, BOOT_RESPONSE_END, sizeof_str(BOOT_RESPONSE_END));
     }
   }
 }
@@ -80,15 +80,15 @@ const xTransactionT Bootloader_Requests[] =
   NEW_TRANSACTION0(BOOT_GET_FIRMWARE, Bootloader_RESPONSE_GET, 0, BOOT_FIRMWARE_VERSION),
   NEW_TRANSACTION0(BOOT_GET_STATUS, Bootloader_RESPONSE_GET, 0, xFlash.Status),
   
-  NEW_TRANSACTION0(BOOT_SET_FLASH_LOCK_STATE, Bootloader_RESPONSE_DEFAULT, ActionSetLockState, xFlash.Status),
+  NEW_TRANSACTION0(BOOT_SET_FLASH_LOCK_STATE, Bootloader_RESPONSE_DEFAULT, Bootloader_SetLockState, xFlash.Status),
   
-  NEW_TRANSACTION0(BOOT_TRY_WRITE, Bootloader_RESPONSE_DEFAULT, ActionTryWrite, xFlash.Status),
-  NEW_TRANSACTION0(BOOT_TRY_ERASE, Bootloader_RESPONSE_DEFAULT, ActionTryErase, xFlash.Status),
-  NEW_TRANSACTION0(BOOT_TRY_JUMP_TO_MAIN, Bootloader_RESPONSE_DEFAULT, ActionTryJumpToMain, Bootloader.AppInfo),
-  NEW_TRANSACTION0(BOOT_TRY_JUMP_TO_BOOT, Bootloader_RESPONSE_DEFAULT, ActionTryJumpToBoot, Bootloader.AppInfo),
-  NEW_TRANSACTION0(BOOT_TRY_RESET, Bootloader_RESPONSE_DEFAULT, ActionTryReset, Bootloader.AppInfo),
-  NEW_TRANSACTION0(BOOT_TRY_UPDATE_INFO, Bootloader_RESPONSE_DEFAULT, ActionTryUpdateInfo, Bootloader.FirmwareInfo),
+  NEW_TRANSACTION0(BOOT_TRY_WRITE, Bootloader_RESPONSE_DEFAULT, Bootloader_TryWrite, xFlash.Status),
+  NEW_TRANSACTION0(BOOT_TRY_ERASE, Bootloader_RESPONSE_DEFAULT, Bootloader_TryErase, xFlash.Status),
+  NEW_TRANSACTION0(BOOT_TRY_JUMP_TO_MAIN, Bootloader_RESPONSE_DEFAULT, Bootloader_TryJumpToMain, Bootloader.AppInfo),
+  NEW_TRANSACTION0(BOOT_TRY_JUMP_TO_BOOT, Bootloader_RESPONSE_DEFAULT, Bootloader_TryJumpToBoot, Bootloader.AppInfo),
+  NEW_TRANSACTION0(BOOT_TRY_RESET, Bootloader_RESPONSE_DEFAULT, Bootloader_TryReset, Bootloader.AppInfo),
+  NEW_TRANSACTION0(BOOT_TRY_UPDATE_INFO, Bootloader_RESPONSE_DEFAULT, Bootloader_TryUpdateInfo, Bootloader.FirmwareInfo),
   //NEW_TRANSACTION(TRY_READ_CRC, Response_REQUEST_DEFAULT, ActionReadInfo, Bootloader.Info),
-  { .Id = -1 }
+  { 0 }
 };
 //==============================================================================

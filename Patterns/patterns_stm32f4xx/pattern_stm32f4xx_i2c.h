@@ -4,10 +4,10 @@
  * Created: 16.05.2019 14:29:38
  *  Author: rekuts
  */ 
-//=================================================================================================================================
+//==============================================================================
 #ifndef PATTERN_STM32X4XX_I2C_H_
 #define PATTERN_STM32X4XX_I2C_H_
-//=================================================================================================================================
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t PeripheralEnable: 1; //I2C_CR1_PE    
@@ -31,7 +31,7 @@ typedef union{
   };
   uint32_t Value;
 }I2C_CR1_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t PeripheralClockFrequency: 6; //I2C_CR2_FREQ    
@@ -48,7 +48,7 @@ typedef union{
   };
   uint32_t Value;
 }I2C_CR2_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t InterfaceAddress0x01: 1; //I2C_OAR1_ADD0    
@@ -59,7 +59,7 @@ typedef union{
   };
   uint32_t Value;
 }I2C_OAR1_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t DualAddressingModeEnable: 1; //I2C_OAR2_ENDUAL    
@@ -67,7 +67,7 @@ typedef union{
   };
   uint32_t Value;
 }I2C_OAR2_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t StartBit: 1; //I2C_SR1_SB    
@@ -92,7 +92,7 @@ typedef union{
   };
   uint32_t Value;
 }I2C_SR1_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t MasterOrSlave: 1; //I2C_SR2_MSL    
@@ -109,7 +109,7 @@ typedef union{
   };
   uint32_t Value;
 }I2C_SR2_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t ClockControlRegister : 12; //I2C_CCR_CCR
@@ -121,14 +121,14 @@ typedef union{
   };
   uint32_t Value;
 }I2C_CCR_T;
-
+//==============================================================================
 typedef union{
   struct{
     /* 0x00000001 */ uint32_t MaximumRiseTime : 6; //I2C_CCR_CCR
   };
   uint32_t Value;
 }I2C_TRISE_T;
-
+//==============================================================================
 typedef struct{
   volatile I2C_CR1_T CR1;
   volatile I2C_CR2_T CR2;
@@ -140,5 +140,5 @@ typedef struct{
   volatile I2C_CCR_T CCR;
   volatile I2C_TRISE_T TRISE;
 }I2C_RegT;
-//=================================================================================================================================
+//==============================================================================
 #endif /* PATTERN_STM32X4XX_I2C_H_ */

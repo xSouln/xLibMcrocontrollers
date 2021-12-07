@@ -32,10 +32,15 @@ xPacketT xTxGetPacket(xTxT *Tx)
   return packet;
 }
 //=================================================================================================================================
-void xTxPutByte(xTxT *Tx, uint8_t byte)
+inline void xTxPutByte(xTxT *Tx, uint8_t byte)
 {
   Tx->Buffer[Tx->State.TotalIndex] = byte;
   Tx->State.TotalIndex++;
   Tx->State.TotalIndex &= Tx->State.SizeMask;
+}
+//=================================================================================================================================
+inline void xTxAddStr(xTxT *Tx, char* str)
+{
+  xTxAdd(Tx, str, strlen(str));
 }
 //=================================================================================================================================
