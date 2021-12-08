@@ -27,7 +27,7 @@ int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t t
   
   if(!xFlash.Status.FlashUnlocked) { xFlash.Status.OperationResult = BOOT_LOCKED; goto end; }
   
-  while(FLASH_PAGES[sector] < start_address && sector < sizeof_array(FLASH_PAGES) - 2)
+  while(FLASH_PAGES[sector] < start_address && sector < SIZE_ARRAY(FLASH_PAGES) - 2)
   {
     sector++;
   }
@@ -41,7 +41,7 @@ int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t t
   
   if(READ_BIT(FLASH->SR, FLASH_SR_EOP)) { WRITE_REG(FLASH->SR, FLASH_SR_EOP); }
   
-  while(start_address < end_address && sector < sizeof_array(FLASH_PAGES) - 1)
+  while(start_address < end_address && sector < SIZE_ARRAY(FLASH_PAGES) - 1)
   {
     CLEAR_BIT(FLASH->CR, FLASH_CR_PSIZE);
     FLASH->CR |= FLASH_PSIZE_WORD;

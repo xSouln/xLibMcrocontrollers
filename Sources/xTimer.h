@@ -76,7 +76,7 @@ extern inline void xTimerDecrement(xTimerT* timer);
 extern inline void xTimerDispose(xTimerT* timer);
 extern inline void xTimer(xTimerT* timer);
 xTimerTaskT* xTimerAdd(xTimerT* timer, xTimerAction action, uint32_t retention, uint32_t period);
-extern inline void xTimerHandler();
+extern inline void xTimerTick();
 //==============================================================================
 typedef struct
 {

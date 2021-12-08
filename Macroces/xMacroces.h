@@ -14,7 +14,7 @@
 //==============================================================================
 #ifdef macroces_stm32f4xx
 
-#include "macroces_stm32f4xx_uart.h"
+#include "macroces_stm32f4xx/macroces_stm32f4xx_uart.h"
 
 #endif
 //==============================================================================

@@ -63,7 +63,7 @@ xTransactionT* xTransactionIdentify(xObject context, xTransactionT* transaction,
 #define NEW_COMMAND0(header, request, mode)\
 {\
   .Header = (char*)header,\
-  .HeaderLength = sizeof_str(header),\
+  .HeaderLength = SIZE_STRING(header),\
   .Mode = mode,\
   .Request = (xTransactionAction)request\
 }
@@ -71,7 +71,7 @@ xTransactionT* xTransactionIdentify(xObject context, xTransactionT* transaction,
 #define NEW_COMMAND1(header, request)\
 {\
   .Header = (char*)header,\
-  .HeaderLength = sizeof_str(header),\
+  .HeaderLength = SIZE_STRING(header),\
   .Request = (xTransactionAction)request\
 }
 //==============================================================================

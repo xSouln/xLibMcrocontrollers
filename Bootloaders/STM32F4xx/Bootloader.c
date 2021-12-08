@@ -149,6 +149,12 @@ inline void Bootloader_Handler()
     Bootloader.AppInfo.Status.JumpToBoot = false;
     NVIC_SystemReset();
   }
+  
+  if(Bootloader.AppInfo.Status.JumpToMain)
+  {
+    Bootloader.AppInfo.Status.JumpToMain = false;
+    NVIC_SystemReset();
+  }
 }
 //==============================================================================
 BootloaderT Bootloader =

@@ -68,6 +68,12 @@ typedef struct
   volatile uint32_t OperationTimeout;
 }xFlashT;
 //==============================================================================
+typedef struct
+{
+  uint16_t Key;
+  uint16_t crc;
+}xFlashNoteT;
+//==============================================================================
 extern xFlashT xFlash;
 //==============================================================================
 int8_t xFlashErasePages(uint32_t start_address, uint32_t end_address, uint32_t timeout);

@@ -66,9 +66,9 @@ void Bootloader_RequestAction(xEventBaseT* event, uint8_t* object, uint16_t size
     
     if(transaction->Response)
     {
-      xTxAdd(((xEventCommandT*)event)->Rx->Tx, BOOT_RESPONSE_HEADER, sizeof_str(BOOT_RESPONSE_HEADER));
+      xTxAdd(((xEventCommandT*)event)->Rx->Tx, BOOT_RESPONSE_HEADER, SIZE_STRING(BOOT_RESPONSE_HEADER));
       transaction->Response(event, object, size, action_error);
-      xTxAdd(((xEventCommandT*)event)->Rx->Tx, BOOT_RESPONSE_END, sizeof_str(BOOT_RESPONSE_END));
+      xTxAdd(((xEventCommandT*)event)->Rx->Tx, BOOT_RESPONSE_END, SIZE_STRING(BOOT_RESPONSE_END));
     }
   }
 }

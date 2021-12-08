@@ -11,11 +11,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 //==============================================================================
-#ifdef pattern_stm32f4xx
+#ifdef patterns_stm32f4xx
 
 #include "patterns_stm32f4xx/pattern_stm32f4xx_uart.h"
 #include "patterns_stm32f4xx/pattern_stm32f4xx_timer.h"
 #include "patterns_stm32f4xx/pattern_stm32f4xx_spi.h"
+#include "patterns_stm32f4xx/pattern_stm32f4xx_i2c.h"
 
 #endif
 //==============================================================================
@@ -78,9 +79,12 @@ static char RESPONSE_BOOT_ACCEPT[] = "#BACC:";
 static char RESPONSE_HEADER[] = "#RES::";
 static char RESPONSE_ACCEPT[] = "#ACC::";
 static char RESPONSE_HEADER_NOTE[] = "#NOTE:";
-static char RESPONSE_END[] = "\r";
+//static char RESPONSE_END[] = "\r";
 //==============================================================================
 #define RESPONSE_END_SIZE (sizeof(RESPONSE_END) / sizeof(RESPONSE_END[0]) - 1)
+#define SIZE_STRING(str)(sizeof(str) / sizeof(str[0]) - 1)
+#define SIZE_ARRAY(array)(sizeof(array) / sizeof(array[0]))
+
 #define sizeof_str(str)(sizeof(str) / sizeof(str[0]) - 1)
 #define sizeof_array(array)(sizeof(array) / sizeof(array[0]))
 //==============================================================================

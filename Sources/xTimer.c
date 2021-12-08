@@ -9,7 +9,7 @@
 //==============================================================================
 TimerT Timer;
 //==============================================================================
-inline void xTimerHandler()
+inline void xTimerTick()
 {
   Timer.Events.Time1ms = true;
   if(++Timer.Counters.Time10ms == 10){ Timer.Counters.Time10ms = 0; Timer.Events.Time10ms = true;
