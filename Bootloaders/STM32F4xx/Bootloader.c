@@ -11,9 +11,15 @@
 #include "Bootloader.h"
 #include "xTransaction.h"
 //==============================================================================
+uint8_t bootloader_read_buffer[BOOT_READ_BUFFER_SIZE];
+
+EVENT_PATTERN(Response,
+               xRxT* Rx,
+               xObject* Holder,
+               xTransactionT* Transaction);
+//==============================================================================
 int16_t Bootloader_TryWrite(xObject context, RequestWriteT* request, uint16_t object_size)
 {
-  if(!request){ return BOOT_ERROR_REQUEST; }
   if(request->StartAddress < BOOT_END_ADDRESS){ return BOOT_OUTSIDE; }
   if((request->StartAddress + request->DataSize) > APP_END_ADDRESS){ return BOOT_OUTSIDE; }
   if(object_size - sizeof(RequestWriteT) < request->DataSize){ return BOOT_ERROR_REQUEST; }
@@ -24,23 +30,30 @@ int16_t Bootloader_TryWrite(xObject context, RequestWriteT* request, uint16_t ob
   return xFlashWrite(request->StartAddress, data, request->DataSize, 100);
 }
 //==============================================================================
-int16_t Bootloader_TryRead(xObject context, RequestReadT* request, uint16_t object_size)
-{  
+int16_t Bootloader_TryRead(xEventBaseT* event, RequestReadT* request, uint16_t object_size)
+{
+  ((xTransactionT*)event->Context)->Content.size = 0;
+   
+  if(request->DataSize > BOOT_READ_BUFFER_SIZE){ return BOOT_OUTSIDE; }
+  if((request->StartAddress + request->DataSize) > APP_END_ADDRESS){ return BOOT_OUTSIDE; }
+  
+  xFlashRead(request->StartAddress, bootloader_read_buffer, request->DataSize);
+  
+  ((xTransactionT*)event->Context)->Content.obj = bootloader_read_buffer;
+  ((xTransactionT*)event->Context)->Content.size = request->DataSize;
+  
   return BOOT_ACCEPT;
 }
 //==============================================================================
 int16_t Bootloader_TryErase(xObject context, RequestEraseT* request, uint16_t object_size)
 {
-  if(!request){ return BOOT_ERROR_REQUEST; }
   if(request->StartAddress < BOOT_END_ADDRESS){ return BOOT_OUTSIDE; }
   if(request->StartAddress > request->EndAddress){ return BOOT_ERROR_ACTION; }
   return xFlashErasePages(request->StartAddress, request->EndAddress, 2000);
 }
 //==============================================================================
 int16_t Bootloader_SetLockState(xObject context, uint8_t* request)
-{
-  if(!request){ return BOOT_ERROR_REQUEST; }
-  
+{  
   return xFlashSetLock(*request > 0);
 }
 //==============================================================================

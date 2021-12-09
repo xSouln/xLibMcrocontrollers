@@ -5,7 +5,7 @@
  *  Author: rekuts
  */ 
 #include "xThread.h"
-//=================================================================================================================================
+//==============================================================================
 /*
 void xThread(xThreadT *thread){    
   if(thread->State.HandlerIndex != thread->State.TotalIndex){
@@ -20,7 +20,7 @@ void xThread(xThreadT *thread){
     thread->Handler.Update = false;
   }
 }
-//=================================================================================================================================
+//==============================================================================
 int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key){
   thread->Handler.IsAdd = true;
   
@@ -36,7 +36,7 @@ int8_t xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16
   return 0;
 }
 */
-//=================================================================================================================================
+//==============================================================================
 void xThread(xThreadT *thread)
 {    
   //thread->Handler.Update = true;
@@ -51,7 +51,7 @@ void xThread(xThreadT *thread)
   
   //thread->Handler.Update = false;
 }
-//=================================================================================================================================
+//==============================================================================
 void xThreadDispose(xThreadT *thread)
 {    
   //thread->Handler.Update = true;
@@ -69,7 +69,7 @@ void xThreadDispose(xThreadT *thread)
   
   //thread->Handler.Update = false;
 }
-//=================================================================================================================================
+//==============================================================================
 xThreadTaskT* xThreadAdd(xThreadT *thread, xThreadAction action, xObject object, uint16_t size, uint16_t key)
 {
   thread->Handler.IsAdd = true;
@@ -89,4 +89,4 @@ xThreadTaskT* xThreadAdd(xThreadT *thread, xThreadAction action, xObject object,
   thread->Handler.IsAdd = false;
   return request;
 }
-//=================================================================================================================================
+//==============================================================================

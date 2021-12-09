@@ -4,6 +4,8 @@
 #include <string.h>
 #include "xRx.h"
 //==============================================================================
+#define RX_EVENT_DESCRIPTION "xRxEventEndLine"
+//==============================================================================
 void xRxUpdate(xObject context, xRxT* rx)
 {
   while(rx->CircleReceiver.TotalIndex != rx->CircleReceiver.HandlerIndex)
@@ -15,6 +17,7 @@ void xRxUpdate(xObject context, xRxT* rx)
     {
       xEventBaseT action =
       {
+        .Description = RX_EVENT_DESCRIPTION,
         .Attachment = rx,
         .Holder = context
       };
@@ -26,6 +29,7 @@ void xRxUpdate(xObject context, xRxT* rx)
     {
       xEventBaseT action =
       {
+        .Description = RX_EVENT_DESCRIPTION,
         .Attachment = rx,
         .Holder = context
       };
@@ -52,6 +56,7 @@ void xRxAdd(xObject context, xRxT* rx, uint8_t *data, uint16_t data_size)
     {
       xEventBaseT action =
       {
+        .Description = RX_EVENT_DESCRIPTION,
         .Attachment = rx,
         .Holder = context
       };
@@ -63,6 +68,7 @@ void xRxAdd(xObject context, xRxT* rx, uint8_t *data, uint16_t data_size)
     {
       xEventBaseT action =
       {
+        .Description = RX_EVENT_DESCRIPTION,
         .Attachment = rx,
         .Holder = context
       };

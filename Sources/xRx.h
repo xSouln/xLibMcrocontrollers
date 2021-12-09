@@ -94,7 +94,8 @@ uint8_t name##_RX_OBJECT_BUF[name##_RX_OBJECT_BUF_SIZE]
 #define RX_INIT(name, size_mask_circle_buf, size_object_buf, event_end_line)\
 uint8_t name##_RX_CIRCLE_BUF[size_mask_circle_buf + 1];\
 uint8_t name##_RX_OBJECT_BUF[size_object_buf];\
-xRxT name##_RX = {\
+xRxT name##_RX =\
+{\
   .Description = "xRxT",\
   .CircleReceiver = { .Buffer = name##_RX_CIRCLE_BUF, .SizeMask = size_mask_circle_buf },\
   .ObjectReceiver = { .EventEndLine = event_end_line, .Object = name##_RX_OBJECT_BUF, .Size = size_object_buf }\

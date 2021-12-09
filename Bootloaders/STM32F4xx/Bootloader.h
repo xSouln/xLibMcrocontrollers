@@ -31,6 +31,8 @@ enum ERRORS_BOOT
   BOOT_ERROR_ADDRESS
 };
 //==============================================================================
+#define BOOT_READ_BUFFER_SIZE (0x1ff + 1)
+//==============================================================================
 static char BOOT_FIRMWARE_VERSION[] = "boot:1.0.0";
 //==============================================================================
 typedef void (*AppFuncT)();
@@ -119,14 +121,15 @@ extern BootloaderT Bootloader;
 //==============================================================================
 int16_t Bootloader_TryWrite(xObject context, RequestWriteT* request, uint16_t object_size);
 int16_t Bootloader_TryErase(xObject context, RequestEraseT* request, uint16_t object_size);
+int16_t Bootloader_TryRead(xEventBaseT* event, RequestReadT* request, uint16_t object_size);
+
 int16_t Bootloader_TryJumpToMain(xObject context);
 int16_t Bootloader_TryJumpToBoot(xObject context);
+
 int16_t Bootloader_TryReset(xObject context);
 int16_t Bootloader_TryUpdateInfo(xObject context);
-int16_t Bootloader_TryReset(xObject context);
 
 int16_t Bootloader_SetLockState(xObject context, uint8_t* request);
-
 int16_t Bootloader_SetFirmwareInfo(FirmwareInfoT* info);
 
 extern inline void Bootloader_Handler();

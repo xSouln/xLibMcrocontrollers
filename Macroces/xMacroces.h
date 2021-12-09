@@ -24,11 +24,12 @@
 #define COPY_MEMORY(memory, object, size) memcpy((uint8_t*)memory, (uint8_t*)object, size)  
 #define COPY_OBJECT(memory, object) memcpy((uint8_t*)memory, (uint8_t*)&object, sizeof(object))
 //==============================================================================
-//#define CONTENT_PUT(arg_obj, arg_size) {   }
+/*
 #define xRequestDef(name, size1, ...) \
 xContent RequestContent_##name[VA_ARGS_COUNT(__VA_ARGS__)] = { { .obj = &#__VA_ARGS__, .size = sizeof(#__VA_ARGS__) } }; \
 xObject RequestObjects_##name[VA_ARGS_COUNT(__VA_ARGS__)] = { &#__VA_ARGS__ }; \
 uint8_t RequestObjectSize_##name[VA_ARGS_COUNT(__VA_ARGS__)] = { sizeof(#__VA_ARGS__) }; \
 xRequestT Request_##name = { .Content = { 0 }, .Contents = RequestContent_##name }
+*/
 //==============================================================================
 #endif /* XMACROSES_H_ */

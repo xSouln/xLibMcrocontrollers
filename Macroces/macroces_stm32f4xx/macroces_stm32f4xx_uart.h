@@ -42,8 +42,39 @@
     }\
   }
 //==============================================================================
-#define UARTX_HANDLER_REF(Context, Reg, Rx)\
+#define UARTX_IRQ(Reg, Rx, Tx)\
+  if(Reg->SR.RxNotEmpty)\
+  {\
+    Reg->SR.RxNotEmpty = false;\
+    Rx.CircleReceiver.Buffer[Rx.CircleReceiver.TotalIndex] = Reg->DR;\
+    Rx.CircleReceiver.TotalIndex++;\
+    Rx.CircleReceiver.TotalIndex &= Rx.CircleReceiver.SizeMask;\
+    return;\
+  }\
+  if(Reg->CR1.TxEmptyInterruptEnable && Reg->SR.TxEmpty)\
+  {\
+    if(Tx.State.HandlerIndex != Tx.State.TotalIndex)\
+    {\
+      Reg->DR = Tx.Buffer[Tx.State.HandlerIndex];\
+      Tx.State.HandlerIndex++;\
+      Tx.State.HandlerIndex &= Tx.State.SizeMask;\
+    }\
+    else\
+    {\
+      Reg->CR1.TxEmptyInterruptEnable = false;\
+    }\
+  }
+//==============================================================================
+#define UARTX_RX_HANDLER_REF(Context, Reg, Rx)\
   xRxUpdate(Context, Rx);\
+  if(Reg->SR.ErrorOverRun)\
+  {\
+    Reg->SR;\
+    Reg->SR.ErrorOverRun = false;\
+  }
+
+#define UARTX_RX_HANDLER(Context, Reg, Rx)\
+  xRxUpdate(Context, &Rx);\
   if(Reg->SR.ErrorOverRun)\
   {\
     Reg->SR;\
@@ -52,6 +83,12 @@
 //==============================================================================
 #define UARTX_TX_HANDLER_REF(Context, Reg, Tx)\
   if(!Reg->CR1.TxEmptyInterruptEnable && Tx->State.TotalIndex != Tx->State.HandlerIndex)\
+  {\
+    Reg->CR1.TxEmptyInterruptEnable = true;\
+  }
+
+#define UARTX_TX_HANDLER(Context, Reg, Tx)\
+  if(!Reg->CR1.TxEmptyInterruptEnable && Tx.State.TotalIndex != Tx.State.HandlerIndex)\
   {\
     Reg->CR1.TxEmptyInterruptEnable = true;\
   }
