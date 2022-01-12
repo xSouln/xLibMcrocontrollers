@@ -15,7 +15,6 @@ uint8_t bootloader_read_buffer[BOOT_READ_BUFFER_SIZE];
 
 EVENT_PATTERN(Response,
                xRxT* Rx,
-               xObject* Holder,
                xTransactionT* Transaction);
 //==============================================================================
 int16_t Bootloader_TryWrite(xObject context, RequestWriteT* request, uint16_t object_size)

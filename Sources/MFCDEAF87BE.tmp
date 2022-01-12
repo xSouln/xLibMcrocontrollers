@@ -89,25 +89,27 @@ static char RESPONSE_HEADER_NOTE[] = "#NOTE:";
 #define sizeof_array(array)(sizeof(array) / sizeof(array[0]))
 //==============================================================================
 #define OBJECT_DESCRIPTION\
-  char* Description
+  const char* Description
 
 #define OBJECT_ATTACHMENT(TAttachment)\
   OBJECT_DESCRIPTION;\
-  TAttachment Attachment
+  const TAttachment Attachment
     
 #define OBJECT_ATTACHMENT_PATTERN(TAttachment)\
   OBJECT_DESCRIPTION;\
-  TAttachment
+  const TAttachment
 //==============================================================================
-#define EVENT_TYPEDEF(Name, TAttachment, TContext)\
+#define EVENT_TYPEDEF(Name, TAttachment, THolder, TContext)\
 typedef struct{\
   OBJECT_ATTACHMENT(TAttachment);\
+  const THolder Holder;\
   TContext Context;\
 }xEvent##Name##T
 
-#define EVENT_PATTERN(Name, TAttachment, TContext)\
+#define EVENT_PATTERN(Name, TAttachment, THolder, TContext)\
 typedef struct{\
   OBJECT_ATTACHMENT_PATTERN(TAttachment);\
+  const THolder;\
   TContext;\
 }xEvent##Name##T
 //==============================================================================
@@ -118,6 +120,7 @@ typedef struct{\
 }xObject##Name##T
 //==============================================================================
 EVENT_TYPEDEF(Base,
+              xObject,
               xObject,
               xObject);
 //==============================================================================

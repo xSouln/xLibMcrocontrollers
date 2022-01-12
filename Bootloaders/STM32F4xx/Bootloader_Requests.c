@@ -14,12 +14,10 @@
 //==============================================================================
 EVENT_PATTERN(Response,
                xRxT* Rx,
-               xObject* Holder,
                xTransactionT* Transaction);
                
 EVENT_PATTERN(Command,
                xRxT* Rx,
-               xObject* Holder,
                xCommandT* Command);
 //==============================================================================
 void Bootloader_RESPONSE_GET(xEventResponseT* event, xObject obj, uint16_t size, int16_t error)
