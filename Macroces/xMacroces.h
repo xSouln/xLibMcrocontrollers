@@ -23,6 +23,8 @@
 //==============================================================================
 #define COPY_MEMORY(memory, object, size) memcpy((uint8_t*)memory, (uint8_t*)object, size)  
 #define COPY_OBJECT(memory, object) memcpy((uint8_t*)memory, (uint8_t*)&object, sizeof(object))
+
+#define CLEAR_MEMORY(object) memset(&object, 0, sizeof(object))
    
 //inline static uint8_t* NEW_OBJECT(object, size)
 //==============================================================================
