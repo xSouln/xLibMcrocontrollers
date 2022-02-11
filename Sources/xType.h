@@ -20,6 +20,15 @@
 
 #endif
 //==============================================================================
+#if patterns_stm32f1xx
+
+#include "patterns_stm32f1xx/pattern_stm32f1xx_uart.h"
+#include "patterns_stm32f1xx/pattern_stm32f1xx_timer.h"
+#include "patterns_stm32f1xx/pattern_stm32f1xx_spi.h"
+#include "patterns_stm32f1xx/pattern_stm32f1xx_i2c.h"
+
+#endif
+//==============================================================================
 typedef union{
   struct{
     uint64_t ExponentSign : 1;
