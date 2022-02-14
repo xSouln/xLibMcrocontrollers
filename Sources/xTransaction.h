@@ -32,7 +32,7 @@ typedef struct{
   uint8_t HeaderLength;
   uint8_t Mode;
   xTransactionAction Request;
-}xCommandT;
+}xRequestT;
 //==============================================================================
 typedef struct{
   //xTransactionHandlerT Handler;
@@ -42,7 +42,7 @@ typedef struct{
   xContent Content;
 }xTransactionT;
 //==============================================================================
-xCommandT* xCommandIdentify(xObject context, xCommandT commands[], uint8_t data[], uint16_t len);
+xRequestT* xRequestIdentify(xObject context, xRequestT commands[], uint8_t data[], uint16_t len);
 xTransactionT* xTransactionIdentify(xObject context, xTransactionT* transaction, uint16_t key);
 //==============================================================================
 #define NEW_TRANSACTION0(id, response, control, content)\

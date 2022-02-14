@@ -2,23 +2,23 @@
 #include <string.h>
 #include "xTransaction.h"
 //==============================================================================
-xCommandT* xCommandIdentify(xObject context, xCommandT commands[], uint8_t data[], uint16_t len)
+xRequestT* xRequestIdentify(xObject context, xRequestT request[], uint8_t data[], uint16_t len)
 {
   uint8_t i = 0;
-  while(commands[i].Header)
+  while(request[i].Header)
   {
-    if(len >= commands[i].HeaderLength)
+    if(len >= request[i].HeaderLength)
     {
-      if(memcmp(data, commands[i].Header, commands[i].HeaderLength) == 0)
+      if(memcmp(data, request[i].Header, request[i].HeaderLength) == 0)
       {
-        data += commands[i].HeaderLength;
-        len -= commands[i].HeaderLength;
+        data += request[i].HeaderLength;
+        len -= request[i].HeaderLength;
         
-        if (commands[i].Request)
+        if (request[i].Request)
         {
-          commands[i].Request(context, data, len);
+          request[i].Request(context, data, len);
         }
-        return &commands[i];
+        return &request[i];
       }
     }
     i++;

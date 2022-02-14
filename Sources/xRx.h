@@ -22,6 +22,8 @@ typedef struct { uint16_t size; uint8_t* ptr; } xRxObjectT;
 //==============================================================================
 typedef int (*xRxEventEndLine)(xObject action, uint8_t* object, uint16_t size);
 //==============================================================================
+static const char RX_DEFAULT_DESCRIPTION[] = "xRxT";
+//==============================================================================
 typedef struct
 {
   uint16_t Storage : 1;
