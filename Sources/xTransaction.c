@@ -11,15 +11,13 @@ xCommandT* xCommandIdentify(xObject context, xCommandT commands[], uint8_t data[
     {
       if(memcmp(data, commands[i].Header, commands[i].HeaderLength) == 0)
       {
-        ((xEventBaseT*)context)->Context = &commands[i];
-        switch(commands[i].Mode)
+        data += commands[i].HeaderLength;
+        len -= commands[i].HeaderLength;
+        
+        if (commands[i].Request)
         {
-          case TRANSACTION_MODE_OBJECT:
-          data += commands[i].HeaderLength;
-          len -= commands[i].HeaderLength;
-          break;
-        }		
-        if (commands[i].Request) { commands[i].Request(context, data, len); }
+          commands[i].Request(context, data, len);
+        }
         return &commands[i];
       }
     }
