@@ -18,7 +18,7 @@ EVENT_PATTERN(Response,
                
 EVENT_PATTERN(Command,
                xRxT* Rx,
-               xCommandT* Command);
+               xRequestT* Command);
 //==============================================================================
 void Bootloader_RESPONSE_GET(xEventResponseT* event, xObject obj, uint16_t size, int16_t error)
 {
