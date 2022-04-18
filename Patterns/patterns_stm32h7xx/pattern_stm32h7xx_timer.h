@@ -18,13 +18,13 @@ typedef struct{
       /* 0x00000004 */ uint32_t UpdateRequestSource: 1; //TIM_CR1_URS: Update request source
       /* 0x00000008 */ uint32_t OnePulseMode: 1; //TIM_CR1_OPM: One pulse mode
 	  
-	  /* 0x00000010 */ uint32_t Direction: 2; //TIM_CR1_DIR: Direction
+      /* 0x00000010 */ uint32_t Direction: 1; //TIM_CR1_DIR: Direction
       /* 0x00000020 */ uint32_t AlignedModeSelection: 2; //TIM_CR1_DIR: CMS[1:0] bits (Center-aligned mode selection)
       /* 0x00000080 */ uint32_t ReloaPreloadEnable: 1; //TIM_CR1_ARPE: Auto-reload preload enable
 	  
       /* 0x00000100 */ uint32_t ClockDivision: 2; //TIM_CR1_CKD: CKD[1:0] bits (clock division)
-	  /* 0x00000400 */ uint32_t Free10: 1; //TIM_CR1_CKD: CKD[1:0] bits (clock division)
-	  /* 0x00000800 */ uint32_t UpdateInterruptFlagRemap: 2; //TIM_CR1_UIFREMAP: Update interrupt flag remap
+      /* 0x00000400 */ uint32_t Free10: 1; //TIM_CR1_CKD: CKD[1:0] bits (clock division)
+      /* 0x00000800 */ uint32_t UpdateInterruptFlagRemap: 1; //TIM_CR1_UIFREMAP: Update interrupt flag remap
     };
     uint32_t Value;
   };
@@ -49,13 +49,13 @@ typedef struct{
       /* 0x00001000 */ uint32_t OutputIdleState3: 1; //TIM_CR2_OIS3: Output Idle state 3 (OC3 output)
       /* 0x00002000 */ uint32_t OutputIdleStateN3: 1; //TIM_CR2_OIS3N: Output Idle state 3 (OC3N output)
       /* 0x00004000 */ uint32_t OutputIdleState4: 1; //TIM_CR2_OIS4: Output Idle state 4 (OC4 output)
-	  /* 0x00008000 */ uint32_t Free15: 1; //Free
+      /* 0x00008000 */ uint32_t Free15: 1; //Free
 	  
-	  /* 0x00010000 */ uint32_t OutputIdleState5: 1; //TIM_CR2_OIS5: Output Idle state 5 (OC5 output)
-      /* 0x00020000 */ uint32_t OutputIdleState6: 1; //TIM_CR2_OIS6: Output Idle state 6 (OC6 output)	  
-	  /* 0x00040000 */ uint32_t Free18: 2; //Free
+      /* 0x00010000 */ uint32_t OutputIdleState5: 1; //TIM_CR2_OIS5: Output Idle state 5 (OC5 output)
+      /* 0x00020000 */ uint32_t OutputIdleState6: 1; //TIM_CR2_OIS6: Output Idle state 6 (OC6 output)
+      /* 0x00040000 */ uint32_t Free18: 2; //Free
 	  
-	  /* 0x00010000 */ uint32_t MasterModeSelection: 4; //TIM_CR2_MMS2: Master Mode Selection
+      /* 0x00010000 */ uint32_t MasterModeSelection2: 4; //TIM_CR2_MMS2: Master Mode Selection
     };
     uint32_t Value;
   };
@@ -76,7 +76,7 @@ typedef struct{
       /* 0x00004000 */ uint32_t ExternalClockEnable : 1; //TIM_SMCR_ECE: External clock enable
       /* 0x00008000 */ uint32_t ExternalTriggerPolarity: 1; //TIM_SMCR_ETP: External trigger polarity
 	  
-	  /* 0x00010000 */ uint32_t SlaveMode1: 2; //TIM_SMCR_SMS_3: Slave mode selection
+      /* 0x00010000 */ uint32_t SlaveMode1: 2; //TIM_SMCR_SMS_3: Slave mode selection
       /* 0x00020000 */ uint32_t Free17_19 : 1; //Free_17_19
 	  
       /* 0x00100000 */ uint32_t TriggerSelection1: 1; //TIM_SMCR_TS: Trigger selection
@@ -127,11 +127,11 @@ typedef union{
     /* 0x00000800 */ uint32_t Compare3Overcapture: 1; //TIM_SR_CC3OF: Capture/Compare 3 Overcapture Flag
 	
     /* 0x00001000 */ uint32_t Compare4Overcapture: 1; //TIM_SR_CC4OF: Capture/Compare 4 Overcapture Flag
-	/* 0x00002000 */ uint32_t SystemBreak: 1; //TIM_SR_SBIF: System Break Flag
-	/* 0x00004000 */ uint32_t Free14_15: 1; //Free_13_15
-	
-	/* 0x00010000 */ uint32_t Compare5Interrupt: 1; //TIM_SR_CC5IF: Capture/Compare 5 interrupt Flag
-	/* 0x00020000 */ uint32_t Compare6Interrupt: 1; //TIM_SR_CC6IF: Capture/Compare 6 interrupt Flag
+    /* 0x00002000 */ uint32_t SystemBreak: 1; //TIM_SR_SBIF: System Break Flag
+    /* 0x00004000 */ uint32_t Free14_15: 1; //Free_13_15
+    
+    /* 0x00010000 */ uint32_t Compare5Interrupt: 1; //TIM_SR_CC5IF: Capture/Compare 5 interrupt Flag
+    /* 0x00020000 */ uint32_t Compare6Interrupt: 1; //TIM_SR_CC6IF: Capture/Compare 6 interrupt Flag
   };
   uint32_t Value;
 }TimSR_T;
@@ -148,7 +148,7 @@ typedef union{
     /* 0x00000040 */ uint32_t TriggerGeneration : 1; //TIM_EGR_TG: Trigger Generation
     /* 0x00000080 */ uint32_t BreakGeneration: 1; //TIM_EGR_BG: Break Generation
 	
-	/* 0x00000100 */ uint32_t Break2Generation: 1; //TIM_EGR_B2G: Break Generation
+    /* 0x00000100 */ uint32_t Break2Generation: 1; //TIM_EGR_B2G: Break Generation
   };
   uint32_t Value;
 }TimEGR_T;
@@ -170,10 +170,10 @@ typedef struct{
       /* 0x00001000 */ uint32_t Compare2OutputMode: 3; //TIM_CCMR1_OC2M: OC2M[2:0] bits (Output Compare 2 Mode)
       /* 0x00008000 */ uint32_t Compare2ClearEnable: 1; //TIM_CCMR1_OC2CE: Output Compare 2 Clear Enable
 	  
-	  /* 0x00010000 */ uint32_t Compare1OutputMode1: 1; //TIM_CCMR1_OC1M_3: (Output Compare 1 Mode)
-	  /* 0x00020000 */ uint32_t Free13_15: 1; //Free_13_15
-	  
-	  /* 0x00100000 */ uint32_t Compare2OutputMode1: 1; //TIM_CCMR1_OC2M_3: (Output Compare 2 Mode)
+      /* 0x00010000 */ uint32_t Compare1OutputMode1: 1; //TIM_CCMR1_OC1M_3: (Output Compare 1 Mode)
+      /* 0x00020000 */ uint32_t Free13_15: 1; //Free_13_15
+      
+      /* 0x00100000 */ uint32_t Compare2OutputMode1: 1; //TIM_CCMR1_OC2M_3: (Output Compare 2 Mode)
     } Out;
 	
 	
@@ -210,10 +210,10 @@ typedef struct{
       /* 0x00001000 */ uint32_t Compare4OutputMode: 3; //TIM_CCMR2_OC4M: OC4M[2:0] bits (Output Compare 4 Mode)
       /* 0x00008000 */ uint32_t Compare4ClearEnable: 1; //TIM_CCMR2_OC4CE: Output Compare 4 Clear Enable
 	  
-	  /* 0x00010000 */ uint32_t Compare4OutputMode1: 1; //TIM_CCMR2_OC3M_3: (Output Compare 3 Mode)
-	  /* 0x00020000 */ uint32_t Free13_15: 1; //Free_13_15
-	  
-	  /* 0x00100000 */ uint32_t Compare4OutputMode1: 1; //TIM_CCMR2_OC4M_3: (Output Compare 4 Mode)
+      /* 0x00010000 */ uint32_t Compare3OutputMode1: 1; //TIM_CCMR2_OC3M_3: (Output Compare 3 Mode)
+      /* 0x00020000 */ uint32_t Free13_15: 1; //Free_13_15
+      
+      /* 0x00100000 */ uint32_t Compare4OutputMode1: 1; //TIM_CCMR2_OC4M_3: (Output Compare 4 Mode)
     } Out;
 	
     struct{
@@ -226,7 +226,7 @@ typedef struct{
       /* 0x00000400 */ uint32_t Capture4Prescaler: 2; //TIM_CCMR2_IC4PSC: IC4PSC[1:0] bits (Input Capture 4 Prescaler)
       
       /* 0x00001000 */ uint32_t Capture4Filter: 4; //TIM_CCMR2_IC4F: IC4F[3:0] bits (Input Capture 4 Filter)
-    }In;
+    } In;
 	
     uint32_t Value;
   };
@@ -254,12 +254,12 @@ typedef union{
     /* 0x00004000 */ uint32_t Free14 : 1; //Free_14
     /* 0x00008000 */ uint32_t Compare4NPolarity: 1; //TIM_CCER_CC4NP: Capture/Compare 4 Complementary output Polarit
 	
-	/* 0x00010000 */ uint32_t Compare5OutputEnable: 1; //TIM_CCER_CC5E: Capture/Compare 5 output enable
-	/* 0x00020000 */ uint32_t Compare5Polarity: 1; //TIM_CCER_CC5P: Capture/Compare 5 output Polarity
-	/* 0x00040000 */ uint32_t Free18_19 : 2; //Free_14
-	
-	/* 0x00100000 */ uint32_t Compare6OutputEnable: 1; //TIM_CCER_CC6E: Capture/Compare 6 output enable
-	/* 0x00200000 */ uint32_t Compare6Polarity: 1; //TIM_CCER_CC6P: Capture/Compare 6 output Polarity
+    /* 0x00010000 */ uint32_t Compare5OutputEnable: 1; //TIM_CCER_CC5E: Capture/Compare 5 output enable
+    /* 0x00020000 */ uint32_t Compare5Polarity: 1; //TIM_CCER_CC5P: Capture/Compare 5 output Polarity
+    /* 0x00040000 */ uint32_t Free18_19 : 2; //Free_14
+    
+    /* 0x00100000 */ uint32_t Compare6OutputEnable: 1; //TIM_CCER_CC6E: Capture/Compare 6 output enable
+    /* 0x00200000 */ uint32_t Compare6Polarity: 1; //TIM_CCER_CC6P: Capture/Compare 6 output Polarity
   };
   uint32_t Value;
 }TimCCER_T;
@@ -270,8 +270,8 @@ typedef union{
   };
   
   struct{
-	/* 0x00000001 */ uint32_t Free0_30: 1; //TIM_CNT_UIFCPY: Update interrupt flag copy
-	/* 0x80000000 */ uint32_t UpdateInterruptFlagCopy: 1; //TIM_CNT_UIFCPY: Update interrupt flag copy
+    /* 0x00000001 */ uint32_t Free0_30: 1; //TIM_CNT_UIFCPY: Update interrupt flag copy
+    /* 0x80000000 */ uint32_t UpdateInterruptFlagCopy: 1; //TIM_CNT_UIFCPY: Update interrupt flag copy
   };
   
   uint32_t Value;
@@ -354,9 +354,9 @@ typedef union{
   struct{
     /* 0x00000001 */ uint32_t Free0_28: 1; //Free0_28
 	
-	/* 0x20000000 */ uint32_t GroupChannel5And1: 1; //TIM_CCR5_GC5C1: Group Channel 5 and Channel 1
-	/* 0x40000000 */ uint32_t GroupChannel5And2: 1; //TIM_CCR5_GC5C2: Group Channel 5 and Channel 2
-	/* 0x80000000 */ uint32_t GroupChannel5And3: 1; //TIM_CCR5_GC5C3: Group Channel 5 and Channel 3
+    /* 0x20000000 */ uint32_t GroupChannel5And1: 1; //TIM_CCR5_GC5C1: Group Channel 5 and Channel 1
+    /* 0x40000000 */ uint32_t GroupChannel5And2: 1; //TIM_CCR5_GC5C2: Group Channel 5 and Channel 2
+    /* 0x80000000 */ uint32_t GroupChannel5And3: 1; //TIM_CCR5_GC5C3: Group Channel 5 and Channel 3
   } Group;
   uint32_t Value;
 }TimCCR5_T;
@@ -385,12 +385,12 @@ typedef union{
     /* 0x00004000 */ uint32_t AutomaticOutputEnable : 1; //TIM_BDTR_AOE: Automatic Output enable
     /* 0x00008000 */ uint32_t MainOutputEnable: 1; //TIM_BDTR_MOE: Main Output enable
 	
-	/* 0x00010000 */ uint32_t BreakFilter: 4; //TIM_BDTR_BKF: Break Filter for Break
-	
-	/* 0x00100000 */ uint32_t Break2Filter: 4; //TIM_BDTR_BK2F: Break Filter for Break2
-	
-	/* 0x01000000 */ uint32_t Break2Enable: 1; //TIM_BDTR_BK2E: Break enable for Break2
-	/* 0x02000000 */ uint32_t Break2Polarity: 1; //TIM_BDTR_BK2P: Break Polarity for Break2
+    /* 0x00010000 */ uint32_t BreakFilter: 4; //TIM_BDTR_BKF: Break Filter for Break
+    
+    /* 0x00100000 */ uint32_t Break2Filter: 4; //TIM_BDTR_BK2F: Break Filter for Break2
+    
+    /* 0x01000000 */ uint32_t Break2Enable: 1; //TIM_BDTR_BK2E: Break enable for Break2
+    /* 0x02000000 */ uint32_t Break2Polarity: 1; //TIM_BDTR_BK2P: Break Polarity for Break2
   };
   uint32_t Value;
 }TimBDTR_T;
@@ -411,37 +411,23 @@ typedef union{
   uint32_t Value;
 }TimDMAR_T;
 //==============================================================================
-typedef union{
-  struct{
-    /* 0x00000001 */ uint32_t TIM11_InputCapture1Remap: 2; //TIM_OR_TI1_RMP
-	
-    /* 0x00000004 */ uint32_t Free_2_5 : 4; //Free_1_5
-	
-    /* 0x00000040 */ uint32_t TIM5_Input4Remap : 2; //TIM_OR_TI4_RMP
-    
-    /* 0x00000100 */ uint32_t Free_8_10: 2; //Free_8_10
-    /* 0x00000400 */ uint32_t TIM2_InternalTrigger1Remap : 2; //TIM_OR_ITR1_RMP
-  };
-  uint32_t Value;
-}TimOR_T;
-//==============================================================================
 typedef struct{
-  volatile TimCR1_T CR1; 				//TIM control register 1,                   Address offset: 0x00
-  volatile TimCR2_T CR2; 				//Reserved, 0x02
+  volatile TimCR1_T CR1;                //TIM control register 1,                   Address offset: 0x00
+  volatile TimCR2_T CR2;                //Reserved, 0x02
   
-  volatile TimSMCR_T SMCR; 				//TIM control register 2,                   Address offset: 0x04
-  volatile TimDIER_T DIER; 				//TIM slave mode control register,          Address offset: 0x08
+  volatile TimSMCR_T SMCR;              //TIM control register 2,                   Address offset: 0x04
+  volatile TimDIER_T DIER;              //TIM slave mode control register,          Address offset: 0x08
   
-  volatile TimSR_T SR; 					//TIM DMA/interrupt enable register,        Address offset: 0x0C
-  volatile TimEGR_T EGR; 				//TIM event generation register,            Address offset: 0x14
+  volatile TimSR_T SR;                  //TIM DMA/interrupt enable register,        Address offset: 0x0C
+  volatile TimEGR_T EGR;                //TIM event generation register,            Address offset: 0x14
   
-  volatile TimCCMR1_T CCMR1; 			//TIM capture/compare mode register 1,      Address offset: 0x18
-  volatile TimCCMR2_T CCMR2; 			//TIM capture/compare mode register 2,      Address offset: 0x1C
-  volatile TimCCER_T CCER; 				//TIM capture/compare enable register,      Address offset: 0x20
+  volatile TimCCMR1_T CCMR1;            //TIM capture/compare mode register 1,      Address offset: 0x18
+  volatile TimCCMR2_T CCMR2;            //TIM capture/compare mode register 2,      Address offset: 0x1C
+  volatile TimCCER_T CCER;              //TIM capture/compare enable register,      Address offset: 0x20
   
-  volatile uint32_t Counter; 			//TIM counter register,                     Address offset: 0x24
-  volatile uint32_t Prescaler; 			//TIM prescaler,                            Address offset: 0x28
-  volatile uint32_t Period; 			//TIM auto-reload register,                 Address offset: 0x2C
+  volatile uint32_t Counter;            //TIM counter register,                     Address offset: 0x24
+  volatile uint32_t Prescaler;          //TIM prescaler,                            Address offset: 0x28
+  volatile uint32_t Period;             //TIM auto-reload register,                 Address offset: 0x2C
   volatile uint32_t RepetitionCounter; 	//TIM repetition counter register,          Address offset: 0x30
   
   volatile uint32_t CaptureCompare1; 	//TIM capture/compare register 1,           Address offset: 0x34
@@ -449,18 +435,18 @@ typedef struct{
   volatile uint32_t CaptureCompare3; 	//TIM capture/compare register 3,           Address offset: 0x3C
   volatile uint32_t CaptureCompare4; 	//TIM capture/compare register 4,           Address offset: 0x40
   
-  volatile TimBDTR_T BDTR; 				//TIM break and dead-time register,         Address offset: 0x44
-  volatile TimDCR_T DCR; 				//TIM DMA control register,                 Address offset: 0x48
-  volatile uint32_t DMAR; 				//TIM DMA address for full transfer,        Address offset: 0x4C
+  volatile TimBDTR_T BDTR;              //TIM break and dead-time register,         Address offset: 0x44
+  volatile TimDCR_T DCR;                //TIM DMA control register,                 Address offset: 0x48
+  volatile uint32_t DMAR;               //TIM DMA address for full transfer,        Address offset: 0x4C
   
-  volatile uint16_t RESERVED14; 		//Reserved, 0x50
+  volatile uint32_t RESERVED14;         //Reserved, 0x50
   
-  volatile uint32_t CCMR3; 				//TIM capture/compare mode register 3,      Address offset: 0x54
-  volatile uint32_t CCR5; 				//TIM capture/compare register5,            Address offset: 0x58
-  volatile uint32_t CCR6; 				//TIM capture/compare register6,            Address offset: 0x5C
-  volatile uint32_t AF1; 				//TIM alternate function option register 1, Address offset: 0x60
-  volatile uint32_t AF2; 				//TIM alternate function option register 2, Address offset: 0x64
-  volatile uint32_t TISEL; 				//TIM Input Selection register,             Address offset: 0x68
+  volatile uint32_t CCMR3;              //TIM capture/compare mode register 3,      Address offset: 0x54
+  volatile uint32_t CCR5;               //TIM capture/compare register5,            Address offset: 0x58
+  volatile uint32_t CCR6;               //TIM capture/compare register6,            Address offset: 0x5C
+  volatile uint32_t AF1;                //TIM alternate function option register 1, Address offset: 0x60
+  volatile uint32_t AF2;                //TIM alternate function option register 2, Address offset: 0x64
+  volatile uint32_t TISEL;              //TIM Input Selection register,             Address offset: 0x68
 }TimStm32_T; //TIM_TypeDef
 //==============================================================================
 extern TimStm32_T *xTimer1;
@@ -471,8 +457,14 @@ extern TimStm32_T *xTimer5;
 extern TimStm32_T *xTimer6;
 extern TimStm32_T *xTimer7;
 extern TimStm32_T *xTimer8;
-extern TimStm32_T *xTimer9;
-extern TimStm32_T *xTimer10;
+//extern TimStm32_T *xTimer9;
+//extern TimStm32_T *xTimer10;
+extern TimStm32_T *xTimer12;
+extern TimStm32_T *xTimer13;
+extern TimStm32_T *xTimer14;
+extern TimStm32_T *xTimer15;
+extern TimStm32_T *xTimer16;
+extern TimStm32_T *xTimer17;
 //==============================================================================
 extern inline void PATTERN_TIMER_INIT();
 //==============================================================================

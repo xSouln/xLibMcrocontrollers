@@ -13,10 +13,17 @@
 #include "xTx.h"
 #include "xRx.h"
 //==============================================================================
-typedef enum { TRANSACTION_MODE_OBJECT, TRANSACTION_MODE_CONTENT } TRANSACTION_MODE_E;
+typedef enum
+{
+  TRANSACTION_MODE_OBJECT,
+  TRANSACTION_MODE_CONTENT
+    
+} TRANSACTION_MODE_E;
 //==============================================================================
-typedef union{
-  struct{
+typedef union
+{
+  struct
+  {
     uint16_t RequestUpdate;
     uint16_t GetResponse;
     uint16_t Error;
@@ -26,21 +33,27 @@ typedef union{
 //==============================================================================
 typedef void (*xTransactionResponse)(xObject context, xObject request, uint16_t request_size, int16_t error);
 typedef uint16_t (*xTransactionAction)(xObject context, xObject object, uint16_t object_size);
+typedef int (*xTransactionDataBuilder)(xObject context, xPacketDataAggregator aggregator, xObject object, uint16_t object_size);
 //==============================================================================
-typedef struct{
+typedef struct
+{
   xObject Header;
   uint8_t HeaderLength;
   uint8_t Mode;
   xTransactionAction Request;
-}xRequestT;
+   
+} xRequestT;
 //==============================================================================
-typedef struct{
-  //xTransactionHandlerT Handler;
+typedef struct
+{
+  uint16_t Description;
   uint16_t Id;
   xTransactionAction Action;
   xTransactionResponse Response;
+  xTransactionDataBuilder Builder;
   xContent Content;
-}xTransactionT;
+  
+} xTransactionT;
 //==============================================================================
 xRequestT* xRequestIdentify(xObject context, xRequestT commands[], uint8_t data[], uint16_t len);
 xTransactionT* xTransactionIdentify(xObject context, xTransactionT* transaction, uint16_t key);
@@ -58,6 +71,21 @@ xTransactionT* xTransactionIdentify(xObject context, xTransactionT* transaction,
   .Id = id,\
   .Response = (xTransactionResponse)response,\
   .Action = (xTransactionAction)control\
+}
+
+#define NEW_TRANSACTION2(id, response, control, content, content_size)\
+{\
+  .Id = id,\
+  .Response = (xTransactionResponse)response,\
+  .Action = (xTransactionAction)control,\
+  .Content = { .obj = &content, .size = content_size }\
+}
+
+#define NEW_TRANSACTION3(id, response, builder)\
+{\
+  .Id = id,\
+  .Response = (xTransactionResponse)response,\
+  .Builder = (xTransactionDataBuilder)builder,\
 }
 
 #define NEW_COMMAND0(header, request, mode)\

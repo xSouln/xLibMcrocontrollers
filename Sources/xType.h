@@ -10,6 +10,7 @@
 //==============================================================================
 #include <stdint.h>
 #include <stdbool.h>
+#include "xPatterns.h"
 //==============================================================================
 #ifdef patterns_stm32f4xx
 
@@ -56,7 +57,7 @@ typedef void* xObject;
 //==============================================================================
 typedef xObject (*xEvt)(xObject Obj);
 typedef struct { xObject obj; uint16_t key; } xContext;
-typedef struct { xObject obj; uint16_t size; } xContent;
+typedef struct { xObject obj; uint16_t size; xObject next; } xContent;
 //==============================================================================
 typedef struct{ uint8_t Start; uint8_t Ch1; uint8_t Ch2; uint8_t Ch3; uint8_t Ch4; uint8_t End; } RequestHeaderT;
 typedef struct{ uint16_t Key; uint16_t Size; } RequestInfoT;
@@ -67,6 +68,8 @@ typedef struct{ uint16_t Key; uint16_t Size; } ResponseInfoT;
 typedef struct{ ResponseHeaderT Header; ResponseInfoT Info; } ResponseT;
 	
 typedef struct{ uint16_t Action; uint16_t Error; } ErrorResponseT;
+
+typedef int (*xPacketDataAggregator)(xObject object, uint16_t size);
 //==============================================================================
 #define REQUEST_START_CHARACTER '#'
 #define REQUEST_END_CHARACTER ':'
