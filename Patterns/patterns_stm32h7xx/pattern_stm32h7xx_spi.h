@@ -29,8 +29,8 @@ typedef union{
 //==============================================================================
 typedef union{
   struct{
-    /* 0xFFFF0000 */ uint32_t CurrentDataSize: 16; //Number of data transfer extension
-    /* 0x0000FFFF */ uint32_t DataSize: 16; //Number of data at current transfer
+    /* 0x0000FFFF */ uint32_t CurrentDataSize: 16; //Number of data transfer extension
+    /* 0xFFFF0000 */ uint32_t DataSize: 16; //Number of data at current transfer
   };
   uint32_t Value;
 }SpiCR2_T;

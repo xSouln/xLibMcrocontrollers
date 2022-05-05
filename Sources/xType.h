@@ -10,7 +10,6 @@
 //==============================================================================
 #include <stdint.h>
 #include <stdbool.h>
-#include "xPatterns.h"
 //==============================================================================
 #ifdef patterns_stm32f4xx
 
@@ -19,14 +18,19 @@
 #include "patterns_stm32f4xx/pattern_stm32f4xx_spi.h"
 #include "patterns_stm32f4xx/pattern_stm32f4xx_i2c.h"
 
-#endif
-//==============================================================================
-#if patterns_stm32f1xx
+#elsif patterns_stm32f1xx
 
 #include "patterns_stm32f1xx/pattern_stm32f1xx_uart.h"
 #include "patterns_stm32f1xx/pattern_stm32f1xx_timer.h"
 #include "patterns_stm32f1xx/pattern_stm32f1xx_spi.h"
 #include "patterns_stm32f1xx/pattern_stm32f1xx_i2c.h"
+
+#elsif pattern_stm32h7xx
+
+#include "patterns_stm32h7xx/pattern_stm32h7xx_uart.h"
+#include "patterns_stm32h7xx/pattern_stm32h7xx_timer.h"
+#include "patterns_stm32h7xx/pattern_stm32h7xx_spi.h"
+#include "patterns_stm32h7xx/pattern_stm32h7xx_i2c.h"
 
 #endif
 //==============================================================================
