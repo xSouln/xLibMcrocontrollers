@@ -116,7 +116,8 @@ typedef struct{\
 
 #define EVENT_PATTERN(Name, TAttachment, TContext)\
 typedef struct{\
-  OBJECT_ATTACHMENT_PATTERN(TAttachment);\
+  char* Description;\
+  TAttachment;\
   TContext;\
 }xEvent##Name##T
 //==============================================================================
