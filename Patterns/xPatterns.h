@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 //==============================================================================
-#ifdef patterns_stm32h7xx
+#ifdef STM32H743xx
 
 #include "patterns_stm32h7xx/pattern_stm32h7xx_spi.h"
 #include "patterns_stm32h7xx/pattern_stm32h7xx_timer.h"
